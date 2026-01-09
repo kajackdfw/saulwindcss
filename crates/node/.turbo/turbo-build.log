@@ -1,0 +1,37 @@
+
+
+> @tailwindcss/oxide@4.1.18 build /home/ktaylor/Projects/tailwindcss/crates/node
+> pnpm run build:platform && pnpm run build:wasm
+
+
+> @tailwindcss/oxide@4.1.18 build:platform /home/ktaylor/Projects/tailwindcss/crates/node
+> napi build --platform --release
+
+node:events:497
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: spawn cargo ENOENT
+[90m    at ChildProcess._handle.onexit (node:internal/child_process:285:19)[39m
+[90m    at onErrorNT (node:internal/child_process:483:16)[39m
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)[39m
+Emitted 'error' event on ChildProcess instance at:
+[90m    at ChildProcess._handle.onexit (node:internal/child_process:291:12)[39m
+[90m    at onErrorNT (node:internal/child_process:483:16)[39m
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)[39m {
+  errno: [33m-2[39m,
+  code: [32m'ENOENT'[39m,
+  syscall: [32m'spawn cargo'[39m,
+  path: [32m'cargo'[39m,
+  spawnargs: [
+    [32m'metadata'[39m,
+    [32m'--manifest-path'[39m,
+    [32m'/home/ktaylor/Projects/tailwindcss/crates/node/Cargo.toml'[39m,
+    [32m'--format-version'[39m,
+    [32m'1'[39m
+  ]
+}
+
+Node.js v22.21.0
+[41m[30m ELIFECYCLE [39m[49m [31mCommand failed with exit code 1.[39m
+[41m[30m ELIFECYCLE [39m[49m [31mCommand failed with exit code 1.[39m
