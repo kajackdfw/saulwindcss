@@ -18,6 +18,30 @@ A utility-first CSS framework for rapidly building custom user interfaces.
 
 ------
 
+## About This Fork
+
+**Version:** 3.0.24 (JavaScript-only fork)
+
+This is a JavaScript-only fork of Tailwind CSS, based on version 3.0.24 - the last version before the Rust/Oxide engine was introduced. This fork maintains the pure JavaScript/TypeScript architecture without requiring Rust toolchain dependencies.
+
+### Migration Plan
+
+This fork intends to incrementally migrate features and patches from later versions:
+- **v3.1** - Font variation settings, logical properties, delay-0/duration-0 utilities
+- **v3.2** - Additional logical property support, bug fixes
+- **v3.4** - Modern CSS features (subgrid, :has(), text-wrap, size-* utilities)
+
+Features will be ported selectively to maintain the JavaScript-only architecture while bringing in valuable enhancements from later releases.
+
+### Installation
+
+```bash
+npm install
+npm run swcify  # Build the project
+```
+
+------
+
 ## Documentation
 
 For full documentation, visit [tailwindcss.com](https://tailwindcss.com/).
