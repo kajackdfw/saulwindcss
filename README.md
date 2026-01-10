@@ -98,6 +98,152 @@ This fork uses a version-specific build system that allows multiple versions to 
 - Install specific versions from versioned tarballs
 - Backwards compatible with existing tooling via symlinks
 
+### Using in Your Project
+
+You can install this JavaScript-only fork directly from the pre-built tarballs in the `dist/` folder.
+
+#### Quick Start
+
+**1. Install from Tarball**
+
+```bash
+# Create a new project
+mkdir my-website
+cd my-website
+npm init -y
+
+# Install Tailwind CSS v3.1.0 from tarball
+# Option A: Clone this repo and install locally
+git clone https://github.com/YOUR_USERNAME/tailwindcss.git
+npm install ./tailwindcss/dist/3.1.0/tailwindcss-3.1.0.tgz
+
+# Option B: Install directly from GitHub (if tarball is committed)
+npm install https://github.com/YOUR_USERNAME/tailwindcss/raw/javascript-fork-v3.1/dist/3.1.0/tailwindcss-3.1.0.tgz
+```
+
+**2. Create Tailwind Config**
+
+```bash
+npx tailwindcss init
+```
+
+This creates a `tailwind.config.js` file:
+
+```js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ["./*.html", "./src/**/*.{html,js}"],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+```
+
+**3. Create Your CSS File**
+
+Create `src/input.css`:
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+**4. Build Your CSS**
+
+```bash
+# One-time build
+npx tailwindcss -i ./src/input.css -o ./dist/output.css
+
+# Watch mode for development
+npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch
+
+# Minified for production
+npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify
+```
+
+**5. Use in Your HTML**
+
+Create `index.html`:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Tailwind Site</title>
+  <link href="./dist/output.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mx-auto px-4">
+    <h1 class="text-3xl font-bold text-blue-600">
+      Hello Tailwind CSS v3.1!
+    </h1>
+
+    <!-- Try v3.1 features -->
+    <div class="[&:hover]:text-red-500">
+      Arbitrary variant example
+    </div>
+
+    <table class="border-spacing-4">
+      <tr><td>Border spacing utility</td></tr>
+    </table>
+
+    <button class="enabled:bg-blue-500 disabled:bg-gray-300">
+      New enabled variant
+    </button>
+  </div>
+</body>
+</html>
+```
+
+**6. Add Build Scripts to package.json**
+
+```json
+{
+  "scripts": {
+    "dev": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
+    "build": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify"
+  }
+}
+```
+
+Then run:
+```bash
+npm run dev    # Development with watch mode
+npm run build  # Production build
+```
+
+#### Advanced Configuration
+
+**Using with PostCSS:**
+
+```bash
+npm install -D postcss postcss-cli autoprefixer
+```
+
+Create `postcss.config.js`:
+
+```js
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  }
+}
+```
+
+**Using with Build Tools:**
+
+- **Vite:** Works out of the box with PostCSS
+- **Webpack:** Use `postcss-loader`
+- **Parcel:** Automatic PostCSS detection
+- **Rollup:** Use `rollup-plugin-postcss`
+
+See the official [Tailwind CSS framework guides](https://tailwindcss.com/docs/installation/framework-guides) for detailed integration instructions.
+
 ------
 
 ## Documentation
