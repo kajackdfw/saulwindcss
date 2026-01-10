@@ -1,5 +1,5 @@
 <h1>
-  Tailwindcss 3.0 (javaScipt version, not Rusty)
+  Tailwindcss 3.0 ( javaScript version, not Rusty )
 </h1>
 
 A utility-first CSS framework for rapidly building custom user interfaces.
