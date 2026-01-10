@@ -117,10 +117,6 @@ npm init -y
 git clone https://github.com/YOUR_USERNAME/tailwindcss.git
 npm install ./tailwindcss/dist/3.1.0/tailwindcss-3.1.0.tgz
 
-# Option B: Install directly from GitHub (if tarball is committed)
-npm install https://github.com/YOUR_USERNAME/tailwindcss/raw/javascript-fork-v3.1/dist/3.1.0/tailwindcss-3.1.0.tgz
-```
-
 **2. Create Tailwind Config**
 
 ```bash
