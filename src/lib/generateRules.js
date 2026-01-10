@@ -19,6 +19,58 @@ function getClassNameFromSelector(selector) {
   return classNameParser.transformSync(selector)
 }
 
+// Extract arbitrary variants from a candidate
+// Example: "[&:nth-child(3)]:hover:text-red-500" ->
+// { arbitraryVariants: ["&:nth-child(3)"], remaining: "hover:text-red-500" }
+function extractArbitraryVariants(candidate, separator) {
+  let arbitraryVariants = []
+  let remaining = candidate
+
+  // Match patterns like [&...]:
+  // The regex matches: [ followed by any chars not containing ], then ], then separator
+  let regex = new RegExp(`^\\[([^\\]]+)\\]\\${separator}`)
+
+  while (true) {
+    let match = remaining.match(regex)
+    if (!match) break
+
+    let selector = match[1]
+    arbitraryVariants.push(selector)
+    remaining = remaining.slice(match[0].length)
+  }
+
+  return { arbitraryVariants, remaining }
+}
+
+// Validate arbitrary variant selector
+function isValidArbitraryVariant(selector) {
+  // Basic validation
+  if (!selector || typeof selector !== 'string') return false
+
+  // Must start with & (references current selector)
+  if (!selector.startsWith('&')) return false
+
+  // Check for balanced brackets/parentheses
+  let depth = { '(': 0, '[': 0, '{': 0 }
+  for (let char of selector) {
+    if (char === '(' || char === '[' || char === '{') depth[char]++
+    if (char === ')') depth['(']--
+    if (char === ']') depth['[']--
+    if (char === '}') depth['{']--
+    if (depth['('] < 0 || depth['['] < 0 || depth['{'] < 0) return false
+  }
+
+  return depth['('] === 0 && depth['['] === 0 && depth['{'] === 0
+}
+
+// Escape arbitrary variant selector for use in class names
+// Convert underscores to spaces for descendant selectors
+function escapeArbitraryVariant(selector) {
+  // Replace underscore with space for descendant selectors
+  // This allows [&_p] to work as [& p] (descendant combinator)
+  return selector.replace(/_/g, ' ')
+}
+
 // Generate match permutations for a class candidate, like:
 // ['ring-offset-blue', '100']
 // ['ring-offset', 'blue-100']
@@ -416,7 +468,12 @@ function* recordCandidates(matches, classCandidate) {
 
 function* resolveMatches(candidate, context) {
   let separator = context.tailwindConfig.separator
-  let [classCandidate, ...variants] = splitWithSeparator(candidate, separator).reverse()
+
+  // Extract arbitrary variants first
+  let { arbitraryVariants, remaining } = extractArbitraryVariants(candidate, separator)
+
+  // Continue with remaining candidate (without arbitrary variants)
+  let [classCandidate, ...variants] = splitWithSeparator(remaining, separator).reverse()
   let important = false
 
   if (classCandidate.startsWith('!')) {
@@ -541,6 +598,32 @@ function* resolveMatches(candidate, context) {
 
     for (let variant of variants) {
       matches = applyVariant(variant, matches, context)
+    }
+
+    // Apply arbitrary variants
+    for (let arbitraryVariant of arbitraryVariants) {
+      if (!isValidArbitraryVariant(arbitraryVariant)) {
+        // Skip invalid arbitrary variants
+        log.warn([
+          `The arbitrary variant \`[${arbitraryVariant}]\` in \`${candidate}\` is invalid and will be skipped.`,
+          `Arbitrary variants must start with \`&\` and have balanced brackets/parentheses.`,
+        ])
+        continue
+      }
+
+      let selector = escapeArbitraryVariant(arbitraryVariant)
+
+      // Apply the arbitrary variant to all matches
+      matches = matches.map(([meta, rule]) => {
+        let container = postcss.root({ nodes: [rule.clone()] })
+
+        container.walkRules((r) => {
+          // Replace & with the current selector in the arbitrary variant
+          r.selector = selector.replace(/&/g, r.selector)
+        })
+
+        return [meta, container.nodes[0]]
+      })
     }
 
     for (let match of matches) {

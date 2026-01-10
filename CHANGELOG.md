@@ -9,6 +9,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Nothing yet!
 
+## [3.1.0] - 2026-01-10 (JavaScript Fork)
+
+### Added
+
+- **Arbitrary Variants** - Use any selector as a variant with `[&...]` syntax
+  - Pseudo-class variants: `[&:hover]:text-red-500`, `[&:nth-child(3)]:font-bold`
+  - Descendant selectors: `[&_p]:text-sm`, `[&>div]:bg-green-500`
+  - Pseudo-elements: `[&::before]:content-['★']`
+  - Attribute selectors: `[&[data-active]]:bg-blue-500`
+  - Stack multiple: `[&:hover]:[&:first-child]:bg-blue-500`
+- **New Utilities**
+  - `border-spacing-*` - Control table border spacing with full spacing scale
+  - `text-start` / `text-end` - Logical text alignment properties
+  - `grid-flow-dense` / `grid-flow-row-dense` / `grid-flow-col-dense` - Dense grid packing
+  - `mix-blend-plus-lighter` - Additional blend mode
+- **New Variants**
+  - `backdrop:` - Style the `::backdrop` pseudo-element
+  - `enabled:` - Style enabled form elements
+  - `optional:` - Style optional form fields
+  - `contrast-more:` / `contrast-less:` - Adapt to user's contrast preferences
+
+### Changed
+
+- Enhanced candidate extraction to support arbitrary variant syntax
+- Updated variant plugin system to register new prefers-contrast variants
+
+### Notes
+
+This release adapts Tailwind CSS v3.1 features for the JavaScript-only fork architecture, maintaining pure JavaScript/TypeScript without Rust dependencies. All v3.0.24 features remain fully compatible.
+
 ## [3.0.24] - 2022-05-12
 
 ### Fixed

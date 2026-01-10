@@ -12,6 +12,7 @@ const PATTERNS = [
   /([^<>"'`\s]*\[[^<>"'`\s]*\("[^'`\s]*"\)+\])/.source, // h-[calc(100%-theme("spacing.1"))]
   /([^${(<>"'`\s]*\['[^"'`\s]*'\])/.source, // `content-['hello']` but not `content-['hello']']`
   /([^${(<>"'`\s]*\["[^"'`\s]*"\])/.source, // `content-["hello"]` but not `content-["hello"]"]`
+  /(\[&.*?\]:[^<>"'`\s]*)/.source, // Arbitrary variants: `[&:hover]:text-red-500`, `[&[data-active]]:bg-blue`, `[&_p]:text-sm`
   /([^<>"'`\s]*\[[^<>"'`\s]*:[^\]\s]*\])/.source, // `[attr:value]`
   /([^<>"'`\s]*\[[^<>"'`\s]*:'[^"'`\s]*'\])/.source, // `[content:'hello']` but not `[content:"hello"]`
   /([^<>"'`\s]*\[[^<>"'`\s]*:"[^"'`\s]*"\])/.source, // `[content:"hello"]` but not `[content:'hello']`

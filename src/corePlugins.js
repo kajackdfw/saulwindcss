@@ -27,9 +27,7 @@ export let variantPlugins = {
 
     addVariant('placeholder', '&::placeholder')
 
-    /*
     addVariant('backdrop', '&::backdrop')
-    */
 
     addVariant('before', ({ container }) => {
       container.walkRules((rule) => {
@@ -106,6 +104,7 @@ export let variantPlugins = {
       'indeterminate',
       'placeholder-shown',
       'autofill',
+      'optional',
       'required',
       'valid',
       'invalid',
@@ -122,9 +121,7 @@ export let variantPlugins = {
       'focus',
       'focus-visible',
       'active',
-      /*
       'enabled',
-      */
       'disabled',
     ].map((variant) => (Array.isArray(variant) ? variant : [variant, `:${variant}`]))
 
@@ -198,6 +195,11 @@ export let variantPlugins = {
     } else if (mode === 'media') {
       addVariant('dark', '@media (prefers-color-scheme: dark)')
     }
+  },
+
+  prefersContrastVariants: ({ addVariant }) => {
+    addVariant('contrast-more', '@media (prefers-contrast: more)')
+    addVariant('contrast-less', '@media (prefers-contrast: less)')
   },
 
   printVariant: ({ addVariant }) => {
@@ -539,7 +541,6 @@ export let corePlugins = {
     })
   },
 
-  /*
   borderSpacing: ({ addDefaults, matchUtilities, theme }) => {
     addDefaults('border-spacing', {
       '--tw-border-spacing-x': 0,
@@ -574,7 +575,6 @@ export let corePlugins = {
       { values: theme('borderSpacing') }
     )
   },
-  */
 
   transformOrigin: createUtilityPlugin('transformOrigin', [['origin', ['transformOrigin']]]),
   translate: createUtilityPlugin(
@@ -893,6 +893,7 @@ export let corePlugins = {
     addUtilities({
       '.grid-flow-row': { gridAutoFlow: 'row' },
       '.grid-flow-col': { gridAutoFlow: 'column' },
+      '.grid-flow-dense': { gridAutoFlow: 'dense' },
       '.grid-flow-row-dense': { gridAutoFlow: 'row dense' },
       '.grid-flow-col-dense': { gridAutoFlow: 'column dense' },
     })
@@ -1571,10 +1572,8 @@ export let corePlugins = {
       '.text-center': { 'text-align': 'center' },
       '.text-right': { 'text-align': 'right' },
       '.text-justify': { 'text-align': 'justify' },
-      /*
       '.text-start': { 'text-align': 'start' },
       '.text-end': { 'text-align': 'end' },
-      */
     })
   },
 
@@ -1881,6 +1880,7 @@ export let corePlugins = {
       '.mix-blend-saturation': { 'mix-blend-mode': 'saturation' },
       '.mix-blend-color': { 'mix-blend-mode': 'color' },
       '.mix-blend-luminosity': { 'mix-blend-mode': 'luminosity' },
+      '.mix-blend-plus-lighter': { 'mix-blend-mode': 'plus-lighter' },
     })
   },
 

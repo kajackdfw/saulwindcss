@@ -3,7 +3,7 @@
 /cli
 /lib
 /peers
-/dist
+# /dist - Removed to commit versioned tarballs
 /example
 .vscode
 .DS_Store

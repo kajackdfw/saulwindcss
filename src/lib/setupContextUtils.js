@@ -561,6 +561,7 @@ function resolvePlugins(context, root) {
     variantPlugins['directionVariants'],
     variantPlugins['reducedMotionVariants'],
     variantPlugins['darkVariants'],
+    variantPlugins['prefersContrastVariants'],
     variantPlugins['printVariant'],
     variantPlugins['screenVariants'],
     variantPlugins['orientationVariants'],
