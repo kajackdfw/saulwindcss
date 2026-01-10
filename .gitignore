@@ -3,6 +3,7 @@
 /cli
 /lib
 /peers
+/dist
 /example
 .vscode
 .DS_Store

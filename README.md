@@ -1,11 +1,6 @@
-<p>
-  <a href="https://tailwindcss.com/#gh-light-mode-only" target="_blank">
-    <img src="./.github/logo-light.svg" alt="Tailwind CSS" width="350" height="70">
-  </a>
-  <a href="https://tailwindcss.com/#gh-dark-mode-only" target="_blank">
-    <img src="./.github/logo-dark.svg" alt="Tailwind CSS" width="350" height="70">
-  </a>
-</p>
+<h1>
+  Tailwindcss 3.0 (javaScipt version, not Rusty)
+</h1>
 
 A utility-first CSS framework for rapidly building custom user interfaces.
 
@@ -33,12 +28,40 @@ This fork intends to incrementally migrate features and patches from later versi
 
 Features will be ported selectively to maintain the JavaScript-only architecture while bringing in valuable enhancements from later releases.
 
-### Installation
+### Installation and Building
 
 ```bash
+# Install dependencies
 npm install
-npm run swcify  # Build the project
+
+# Build with version-specific folders
+npm run build
+
+# Create version-specific tarball
+npm run pack
+
+# Build and package together
+npm run build:pack
+
+# Legacy build (outputs to lib/ without versioning)
+npm run swcify
 ```
+
+#### Version-Specific Build System
+
+This fork uses a version-specific build system that allows multiple versions to coexist:
+
+**Build Output:**
+- `lib/VERSION/` - Compiled code for each version (e.g., `lib/3.0.24/`)
+- `lib/*.js` - Symlinks to the latest version for backwards compatibility
+- `dist/VERSION/` - Packaged tarballs (e.g., `dist/3.0.24/tailwindcss-3.0.24.tgz`)
+- `dist/*.tgz` - Latest tarball copy at root for convenience
+
+**Benefits:**
+- Work on multiple versions simultaneously
+- Preserve old version artifacts when building new versions
+- Install specific versions from versioned tarballs
+- Backwards compatible with existing tooling via symlinks
 
 ------
 
