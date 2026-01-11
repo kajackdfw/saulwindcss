@@ -616,6 +616,9 @@ module.exports = {
       disc: 'disc',
       decimal: 'decimal',
     },
+    listStyleImage: {
+      none: 'none',
+    },
     margin: ({ theme }) => ({
       auto: 'auto',
       ...theme('spacing'),

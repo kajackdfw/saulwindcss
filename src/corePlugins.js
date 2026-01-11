@@ -640,6 +640,13 @@ export let corePlugins = {
     })
   },
 
+  captionSide: ({ addUtilities }) => {
+    addUtilities({
+      '.caption-top': { 'caption-side': 'top' },
+      '.caption-bottom': { 'caption-side': 'bottom' },
+    })
+  },
+
   borderSpacing: ({ addDefaults, matchUtilities, theme }) => {
     addDefaults('border-spacing', {
       '--tw-border-spacing-x': 0,
@@ -985,6 +992,15 @@ export let corePlugins = {
 
   listStyleType: createUtilityPlugin('listStyleType', [['list', ['listStyleType']]]),
 
+  listStyleImage: ({ matchUtilities, theme }) => {
+    matchUtilities(
+      {
+        'list-image': (value) => ({ 'list-style-image': value }),
+      },
+      { values: theme('listStyleImage') }
+    )
+  },
+
   appearance: ({ addUtilities }) => {
     addUtilities({
       '.appearance-none': { appearance: 'none' },
@@ -1088,6 +1104,7 @@ export let corePlugins = {
 
   alignContent: ({ addUtilities }) => {
     addUtilities({
+      '.content-normal': { 'align-content': 'normal' },
       '.content-center': { 'align-content': 'center' },
       '.content-start': { 'align-content': 'flex-start' },
       '.content-end': { 'align-content': 'flex-end' },
@@ -1095,6 +1112,7 @@ export let corePlugins = {
       '.content-around': { 'align-content': 'space-around' },
       '.content-evenly': { 'align-content': 'space-evenly' },
       '.content-baseline': { 'align-content': 'baseline' },
+      '.content-stretch': { 'align-content': 'stretch' },
     })
   },
 
@@ -1110,12 +1128,14 @@ export let corePlugins = {
 
   justifyContent: ({ addUtilities }) => {
     addUtilities({
+      '.justify-normal': { 'justify-content': 'normal' },
       '.justify-start': { 'justify-content': 'flex-start' },
       '.justify-end': { 'justify-content': 'flex-end' },
       '.justify-center': { 'justify-content': 'center' },
       '.justify-between': { 'justify-content': 'space-between' },
       '.justify-around': { 'justify-content': 'space-around' },
       '.justify-evenly': { 'justify-content': 'space-evenly' },
+      '.justify-stretch': { 'justify-content': 'stretch' },
     })
   },
 
@@ -1351,6 +1371,7 @@ export let corePlugins = {
       '.whitespace-pre': { 'white-space': 'pre' },
       '.whitespace-pre-line': { 'white-space': 'pre-line' },
       '.whitespace-pre-wrap': { 'white-space': 'pre-wrap' },
+      '.whitespace-break-spaces': { 'white-space': 'break-spaces' },
     })
   },
 
@@ -1360,6 +1381,14 @@ export let corePlugins = {
       '.break-words': { 'overflow-wrap': 'break-word' },
       '.break-all': { 'word-break': 'break-all' },
       '.break-keep': { 'word-break': 'keep-all' },
+    })
+  },
+
+  hyphens: ({ addUtilities }) => {
+    addUtilities({
+      '.hyphens-none': { hyphens: 'none' },
+      '.hyphens-manual': { hyphens: 'manual' },
+      '.hyphens-auto': { hyphens: 'auto' },
     })
   },
 
