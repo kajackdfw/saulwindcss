@@ -1,5 +1,5 @@
 <h1>
-  Tailwindcss 3.0 ( javaScript version, not Rusty )
+  Tailwindcss 3.2 ( javaScript version, not Rusty )
 </h1>
 
 A utility-first CSS framework for rapidly building custom user interfaces.
@@ -15,50 +15,56 @@ A utility-first CSS framework for rapidly building custom user interfaces.
 
 ## About This Fork
 
-**Version:** 3.1.0 (JavaScript-only fork)
+**Version:** 3.2.0 (JavaScript-only fork)
 
 This is a JavaScript-only fork of Tailwind CSS, originally based on version 3.0.24 - the last version before the Rust/Oxide engine was introduced. This fork maintains the pure JavaScript/TypeScript architecture without requiring Rust toolchain dependencies.
 
-### What's New in v3.1
+### What's New in v3.2
 
-This version includes key features from Tailwind CSS v3.1, adapted for the JavaScript-only architecture:
+This version includes key features from Tailwind CSS v3.2, adapted for the JavaScript-only architecture:
 
 **New Utilities:**
-- `border-spacing-*` - Control table border spacing (`border-spacing-4`, `border-spacing-x-2`, `border-spacing-y-8`)
-- `text-start` / `text-end` - Logical text alignment properties
-- `grid-flow-dense` - Dense grid packing utilities (`grid-flow-dense`, `grid-flow-row-dense`, `grid-flow-col-dense`)
-- `mix-blend-plus-lighter` - Additional blend mode utility
+- `break-keep` - Prevent breaking within words (`word-break: keep-all`) for CJK languages
+- `collapse` - Collapse table rows/columns (`visibility: collapse`)
+- `fill-none` / `stroke-none` - Remove SVG fill or stroke
+- `place-content-baseline` / `place-items-baseline` / `content-baseline` - Baseline alignment for grid/flex
+- Negative `outline-offset-*` values - Support for negative outline offsets
 
 **New Variants:**
-- `backdrop:` - Style the `::backdrop` pseudo-element
-- `enabled:` - Style enabled form elements (counterpart to `disabled:`)
-- `optional:` - Style optional form fields
-- `contrast-more:` / `contrast-less:` - Adapt to user contrast preferences
+- `aria-*` - Style based on ARIA attributes (`aria-checked:bg-blue-500`, `aria-[disabled]:opacity-50`)
+- `data-*` - Style based on data attributes (`data-[state=open]:block`, `data-[loading]:opacity-50`)
+- `supports-*` - CSS feature query variant (`supports-[display:grid]:grid`)
+- `min-*` / `max-*` - Arbitrary media queries (`min-[768px]:flex`, `max-[1024px]:hidden`)
 
-**Arbitrary Variants:**
-Write custom selector variants on-the-fly:
+**Configuration Enhancements:**
+- `@config` directive - Load configuration from different files per CSS file
+- `relative: true` - Resolve content paths relative to config file location
+- Font feature settings - Support `font-feature-settings` in `fontFamily` theme
+- Enhanced `matchUtilities` and `matchVariant` APIs
+
+**Example Usage:**
 ```html
-<!-- Apply styles to nth-child -->
-<div class="[&:nth-child(3)]:text-red-500">
+<!-- ARIA variants -->
+<button class="aria-checked:bg-blue-500 aria-disabled:opacity-50">Toggle</button>
 
-<!-- Target child elements -->
-<div class="[&_p]:text-sm">
+<!-- Data attribute variants -->
+<div class="data-[state=open]:block data-[state=closed]:hidden">Content</div>
 
-<!-- Direct child selector -->
-<div class="[&>div]:bg-green-500">
+<!-- Feature queries -->
+<div class="supports-[display:grid]:grid supports-[display:flex]:flex">Layout</div>
 
-<!-- Pseudo-elements -->
-<div class="[&::before]:content-['★']">
+<!-- Arbitrary media queries -->
+<div class="min-[768px]:flex max-[1024px]:hidden">Responsive</div>
 
-<!-- Stack multiple arbitrary variants -->
-<div class="[&:hover]:[&:first-child]:bg-blue-500">
+<!-- New utilities -->
+<div class="break-keep -outline-offset-2">Text with outline</div>
 ```
 
 ### Migration Plan
 
 This fork intends to incrementally migrate features and patches from later versions:
 - **v3.1** - ✅ **DONE** - Arbitrary variants, new utilities, new variants
-- **v3.2** - Additional logical property support, bug fixes
+- **v3.2** - 🚧 **IN PROGRESS** - ARIA/data variants, @supports, min/max queries, baseline alignment, configuration enhancements
 - **v3.4** - Modern CSS features (subgrid, :has(), text-wrap, size-* utilities)
 
 Features will be ported selectively to maintain the JavaScript-only architecture while bringing in valuable enhancements from later releases.

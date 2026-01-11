@@ -4,27 +4,31 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## About This Branch
 
-**Branch:** `javascript-fork-v3` (with v3.1 on `javascript-fork-v3.1`)
-**Version:** 3.1.0
+**Branch:** `javascript-fork-v3.2.0` (with v3.1 on `javascript-fork-v3.1`)
+**Version:** 3.2.0
 **Architecture:** JavaScript-only (no Rust dependencies)
 
-This is a JavaScript-only fork of Tailwind CSS v3, originally based on v3.0.24 - the last version before the Rust/Oxide engine was introduced. This branch has been upgraded with v3.1 features while maintaining the pure JavaScript/TypeScript architecture.
+This is a JavaScript-only fork of Tailwind CSS v3, originally based on v3.0.24 - the last version before the Rust/Oxide engine was introduced. This branch has been upgraded with v3.2 features while maintaining the pure JavaScript/TypeScript architecture.
 
-**Note:** The `main` branch contains v4 with Rust/pnpm/monorepo architecture. This document describes the `javascript-fork-v3.1` branch only.
+**Note:** The `main` branch contains v4 with Rust/pnpm/monorepo architecture. This document describes the `javascript-fork-v3.2.0` branch only.
 
-### v3.1.0 Update
+### v3.2.0 Update
 
-The v3.1.0 release includes key features from Tailwind CSS v3.1, adapted for JavaScript-only architecture:
+The v3.2.0 release includes key features from Tailwind CSS v3.2, adapted for JavaScript-only architecture:
 
 **New Features:**
-- ✅ Arbitrary variants (`[&:hover]:text-red-500`, `[&_p]:text-sm`)
-- ✅ New utilities (`border-spacing-*`, `text-start/end`, `grid-flow-dense`, `mix-blend-plus-lighter`)
-- ✅ New variants (`backdrop:`, `enabled:`, `optional:`, `contrast-more/less:`)
+- ✅ ARIA attribute variants (`aria-checked:`, `aria-[disabled]:`)
+- ✅ Data attribute variants (`data-[state=open]:`, `data-[loading]:`)
+- ✅ CSS feature query variant (`supports-[display:grid]:`)
+- ✅ Min/max media query variants (`min-[768px]:`, `max-[1024px]:`)
+- ✅ New utilities (`break-keep`, `collapse`, `fill-none`, `stroke-none`, baseline alignment, negative outline-offset)
+- ✅ Configuration enhancements (`@config` directive, `relative: true`, font-feature-settings)
 
 **Architecture Changes:**
-- Enhanced `src/lib/generateRules.js` with arbitrary variant parsing and application
-- Updated `src/lib/defaultExtractor.js` to extract arbitrary variant patterns
-- Added new variant plugins in `src/corePlugins.js`
+- Enhanced `src/corePlugins.js` with new variant plugins (aria, data, supports, min/max)
+- Updated `src/lib/defaultExtractor.js` to extract new variant patterns
+- Added new utility plugins for v3.2 features
+- Enhanced configuration loading in `src/lib/setupContextUtils.js`
 - All changes maintain JavaScript-only architecture (no Rust/Oxide dependencies)
 
 ## Commands
