@@ -21,14 +21,21 @@ let configPathCache = new LRU({ maxSize: 100 })
 
 let candidateFilesCache = new WeakMap()
 
-function getCandidateFiles(context, tailwindConfig) {
+function getCandidateFiles(context, tailwindConfig, userConfigPath) {
   if (candidateFilesCache.has(context)) {
     return candidateFilesCache.get(context)
   }
 
   let candidateFiles = tailwindConfig.content.files
     .filter((item) => typeof item === 'string')
-    .map((contentPath) => normalizePath(contentPath))
+    .map((contentPath) => {
+      // If relative: true is set and we have a config path, resolve paths relative to config dir
+      if (tailwindConfig.relative && userConfigPath) {
+        let configDir = path.dirname(userConfigPath)
+        return normalizePath(path.resolve(configDir, contentPath))
+      }
+      return normalizePath(contentPath)
+    })
 
   return candidateFilesCache.set(context, candidateFiles).get(context)
 }
@@ -146,7 +153,7 @@ export default function setupTrackingContext(configOrPath) {
         contextDependencies
       )
 
-      let candidateFiles = getCandidateFiles(context, tailwindConfig)
+      let candidateFiles = getCandidateFiles(context, tailwindConfig, userConfigPath)
 
       // If there are no @tailwind or @apply rules, we don't consider this CSS file or it's
       // dependencies to be dependencies of the context. Can reuse the context even if they change.

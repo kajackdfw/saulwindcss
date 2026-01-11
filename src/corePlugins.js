@@ -1641,9 +1641,45 @@ export let corePlugins = {
     matchUtilities({ align: (value) => ({ 'vertical-align': value }) })
   },
 
-  fontFamily: createUtilityPlugin('fontFamily', [['font', ['fontFamily']]], {
-    type: ['lookup', 'generic-name', 'family-name'],
-  }),
+  fontFamily: ({ matchUtilities, theme }) => {
+    matchUtilities(
+      {
+        font: (value) => {
+          // Handle array values: either [fontFamily1, fontFamily2, ...] or [fontFamily, { options }]
+          if (Array.isArray(value)) {
+            let lastItem = value[value.length - 1]
+
+            // If last item is an object, it's options
+            if (typeof lastItem === 'object' && lastItem !== null && !Array.isArray(lastItem)) {
+              let fontFamilies = value.slice(0, -1)
+              let options = lastItem
+
+              return {
+                'font-family': fontFamilies.join(', '),
+                ...(options.fontFeatureSettings && {
+                  'font-feature-settings': options.fontFeatureSettings,
+                }),
+              }
+            } else {
+              // All items are font families
+              return {
+                'font-family': value.join(', '),
+              }
+            }
+          }
+
+          // Single string value
+          return {
+            'font-family': value,
+          }
+        },
+      },
+      {
+        values: theme('fontFamily'),
+        type: ['lookup', 'generic-name', 'family-name'],
+      }
+    )
+  },
 
   fontSize: ({ matchUtilities, theme }) => {
     matchUtilities(

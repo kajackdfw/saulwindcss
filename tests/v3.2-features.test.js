@@ -426,3 +426,51 @@ describe('v3.2 variant combinations', () => {
     })
   })
 })
+
+describe('v3.2 configuration enhancements', () => {
+  test('font-feature-settings in fontFamily', () => {
+    let config = {
+      content: [{ raw: html`<div class="font-sans"></div>` }],
+      theme: {
+        fontFamily: {
+          sans: [
+            'Inter var',
+            {
+              fontFeatureSettings: '"cv11", "ss01"',
+            },
+          ],
+        },
+      },
+      corePlugins: { preflight: false },
+    }
+
+    return run('@tailwind utilities', config).then((result) => {
+      expect(result.css).toMatchFormattedCss(css`
+        .font-sans {
+          font-family: Inter var;
+          font-feature-settings: "cv11", "ss01";
+        }
+      `)
+    })
+  })
+
+  test('fontFamily without font-feature-settings still works', () => {
+    let config = {
+      content: [{ raw: html`<div class="font-mono"></div>` }],
+      theme: {
+        fontFamily: {
+          mono: ['Courier New', 'monospace'],
+        },
+      },
+      corePlugins: { preflight: false },
+    }
+
+    return run('@tailwind utilities', config).then((result) => {
+      expect(result.css).toMatchFormattedCss(css`
+        .font-mono {
+          font-family: Courier New, monospace;
+        }
+      `)
+    })
+  })
+})
