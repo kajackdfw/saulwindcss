@@ -15,6 +15,7 @@ const PATTERNS = [
   /(\[&.*?\]:[^<>"'`\s]*)/.source, // Arbitrary variants: `[&:hover]:text-red-500`, `[&[data-active]]:bg-blue`, `[&_p]:text-sm`
   /(\baria-\[[^\]]+\]:[^<>"'`\s]*)/.source, // ARIA variants: `aria-[checked]:bg-blue-500`, `aria-[disabled]:opacity-50`
   /(\bdata-\[[^\]]+\]:[^<>"'`\s]*)/.source, // Data variants: `data-[state=open]:block`, `data-[loading]:opacity-50`
+  /(\bhas-\[[^\]]+\]:[^<>"'`\s]*)/.source, // Has variants: `has-[:checked]:bg-blue-500`, `has-[>a]:underline`
   /(\bsupports-\[[^\]]+\]:[^<>"'`\s]*)/.source, // Feature query variants: `supports-[display:grid]:grid`
   /(\bmin-\[[^\]]+\]:[^<>"'`\s]*)/.source, // Min-width variants: `min-[768px]:flex`
   /(\bmax-\[[^\]]+\]:[^<>"'`\s]*)/.source, // Max-width variants: `max-[1024px]:hidden`

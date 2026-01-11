@@ -9,6 +9,60 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Nothing yet!
 
+## [3.4.0] - 2026-01-11 (JavaScript Fork)
+
+### Added
+
+**Modern Viewport Units:**
+- `svh`, `lvh`, `dvh` - Small/Large/Dynamic viewport height units for better mobile browser support
+- `svw`, `lvw`, `dvw` - Small/Large/Dynamic viewport width units
+- Available in `height`, `minHeight`, `maxHeight`, `width`, `minWidth`, `maxWidth` themes
+- Better mobile browser support with viewport units that account for dynamic UI (e.g., URL bars)
+
+**Size Utilities:**
+- `size-*` - Combined width and height utilities (e.g., `size-4` sets both `width: 1rem` and `height: 1rem`)
+- Supports all spacing values, fractions (`size-1/2`, `size-3/4`, etc.), and arbitrary values (`size-[200px]`)
+- Includes `size-full`, `size-min`, `size-max`, `size-fit`, `size-auto`
+
+**:has() Pseudo-Class Variant:**
+- `has-[selector]:utility` - Style parents based on descendants using CSS `:has()` pseudo-class
+- Examples: `has-[:checked]:bg-blue-500`, `has-[>a]:underline`, `has-[img]:p-4`
+- Modern contextual styling for parent elements based on child state
+
+**Text Wrapping:**
+- `text-balance` - Balance text across lines for better headlines (CSS text-wrap: balance)
+- `text-pretty` - Better text wrapping avoiding orphans and widows (CSS text-wrap: pretty)
+- `text-wrap` - Standard wrapping behavior
+- `text-nowrap` - Prevent text wrapping
+
+**CSS Subgrid:**
+- `grid-cols-subgrid` - Inherit parent grid columns (grid-template-columns: subgrid)
+- `grid-rows-subgrid` - Inherit parent grid rows (grid-template-rows: subgrid)
+- Enables nested grids that align with parent grid tracks
+
+**Accessibility:**
+- `forced-colors:` variant - Style for Windows High Contrast Mode and forced colors
+- Example: `forced-colors:border-4`, `forced-colors:text-black`
+
+### Changed
+
+- Updated theme configuration with modern viewport unit values across all sizing themes
+- Enhanced grid system with subgrid support
+- Extended arbitrary variant system to support `:has()` pseudo-class patterns
+- All features maintain JavaScript-only architecture (no Rust/Oxide dependencies)
+
+### Browser Support Notes
+
+**Modern Features:**
+- `:has()` pseudo-class requires Chrome 105+, Firefox 121+, Safari 15.4+
+- `text-wrap: balance/pretty` requires Chrome 114+/117+, Safari 17.5+
+- Viewport units (svh, lvh, dvh) supported in all modern browsers
+- Subgrid supported in Chrome 117+, Firefox 71+, Safari 16+
+
+### Notes
+
+This release adapts Tailwind CSS v3.4 features for the JavaScript-only fork architecture, maintaining pure JavaScript/TypeScript without Rust dependencies. All v3.0.24, v3.1.0, v3.2.0, and v3.3.0 features remain fully compatible.
+
 ## [3.2.0] - 2026-01-11 (JavaScript Fork)
 
 ### Added

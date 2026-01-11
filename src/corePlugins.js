@@ -206,6 +206,10 @@ export let variantPlugins = {
     addVariant('print', '@media print')
   },
 
+  forcedColorsVariant: ({ addVariant }) => {
+    addVariant('forced-colors', '@media (forced-colors: active)')
+  },
+
   ariaVariants: ({ addVariant, theme }) => {
     let values = theme('aria') ?? {}
     for (let [key, value] of Object.entries(values)) {
@@ -614,6 +618,8 @@ export let corePlugins = {
   width: createUtilityPlugin('width', [['w', ['width']]]),
   minWidth: createUtilityPlugin('minWidth', [['min-w', ['minWidth']]]),
   maxWidth: createUtilityPlugin('maxWidth', [['max-w', ['maxWidth']]]),
+
+  size: createUtilityPlugin('size', [['size', ['width', 'height']]]),
 
   flex: createUtilityPlugin('flex'),
   flexShrink: createUtilityPlugin('flexShrink', [
@@ -1361,6 +1367,15 @@ export let corePlugins = {
       '.overflow-ellipsis': { 'text-overflow': 'ellipsis' }, // Deprecated
       '.text-ellipsis': { 'text-overflow': 'ellipsis' },
       '.text-clip': { 'text-overflow': 'clip' },
+    })
+  },
+
+  textWrap: ({ addUtilities }) => {
+    addUtilities({
+      '.text-wrap': { 'text-wrap': 'wrap' },
+      '.text-nowrap': { 'text-wrap': 'nowrap' },
+      '.text-balance': { 'text-wrap': 'balance' },
+      '.text-pretty': { 'text-wrap': 'pretty' },
     })
   },
 

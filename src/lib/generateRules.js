@@ -43,7 +43,8 @@ function extractArbitraryVariants(candidate, separator) {
     }
 
     // Match v3.2 arbitrary variants: aria-[...]:, data-[...]:, supports-[...]:, min-[...]:, max-[...]:
-    let v32Regex = new RegExp(`^(aria|data|supports|min|max)-\\[([^\\]]+)\\]\\${separator}`)
+    // v3.4 adds has-[...]
+    let v32Regex = new RegExp(`^(aria|data|supports|min|max|has)-\\[([^\\]]+)\\]\\${separator}`)
     let v32Match = remaining.match(v32Regex)
     if (v32Match) {
       arbitraryVariants.push({ type: v32Match[1], value: v32Match[2] })
@@ -742,6 +743,20 @@ function* resolveMatches(candidate, context) {
               // Just a key like data-[loading]
               r.selector = `${r.selector}[${attrName}-${attrValue}]`
             }
+          })
+
+          return [meta, container.nodes[0]]
+        })
+      } else if (arbitraryVariant.type === 'has') {
+        // v3.4 has variant: add :has() pseudo-class
+        let hasValue = arbitraryVariant.value
+
+        matches = matches.map(([meta, rule]) => {
+          let container = postcss.root({ nodes: [rule.clone()] })
+
+          container.walkRules((r) => {
+            // Add :has() pseudo-class
+            r.selector = `${r.selector}:has(${hasValue})`
           })
 
           return [meta, container.nodes[0]]
