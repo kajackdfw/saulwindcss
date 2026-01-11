@@ -391,6 +391,7 @@ export let corePlugins = {
     addUtilities({
       '.visible': { visibility: 'visible' },
       '.invisible': { visibility: 'hidden' },
+      '.collapse': { visibility: 'collapse' },
     })
   },
 
@@ -930,6 +931,7 @@ export let corePlugins = {
       '.place-content-between': { 'place-content': 'space-between' },
       '.place-content-around': { 'place-content': 'space-around' },
       '.place-content-evenly': { 'place-content': 'space-evenly' },
+      '.place-content-baseline': { 'place-content': 'baseline' },
       '.place-content-stretch': { 'place-content': 'stretch' },
     })
   },
@@ -939,6 +941,7 @@ export let corePlugins = {
       '.place-items-start': { 'place-items': 'start' },
       '.place-items-end': { 'place-items': 'end' },
       '.place-items-center': { 'place-items': 'center' },
+      '.place-items-baseline': { 'place-items': 'baseline' },
       '.place-items-stretch': { 'place-items': 'stretch' },
     })
   },
@@ -951,6 +954,7 @@ export let corePlugins = {
       '.content-between': { 'align-content': 'space-between' },
       '.content-around': { 'align-content': 'space-around' },
       '.content-evenly': { 'align-content': 'space-evenly' },
+      '.content-baseline': { 'align-content': 'baseline' },
     })
   },
 
@@ -1215,6 +1219,7 @@ export let corePlugins = {
       '.break-normal': { 'overflow-wrap': 'normal', 'word-break': 'normal' },
       '.break-words': { 'overflow-wrap': 'break-word' },
       '.break-all': { 'word-break': 'break-all' },
+      '.break-keep': { 'word-break': 'keep-all' },
     })
   },
 
@@ -1515,7 +1520,7 @@ export let corePlugins = {
     })
   },
 
-  fill: ({ matchUtilities, theme }) => {
+  fill: ({ matchUtilities, theme, addUtilities }) => {
     matchUtilities(
       {
         fill: (value) => {
@@ -1524,9 +1529,12 @@ export let corePlugins = {
       },
       { values: flattenColorPalette(theme('fill')), type: ['color', 'any'] }
     )
+    addUtilities({
+      '.fill-none': { fill: 'none' },
+    })
   },
 
-  stroke: ({ matchUtilities, theme }) => {
+  stroke: ({ matchUtilities, theme, addUtilities }) => {
     matchUtilities(
       {
         stroke: (value) => {
@@ -1535,6 +1543,9 @@ export let corePlugins = {
       },
       { values: flattenColorPalette(theme('stroke')), type: ['color', 'url'] }
     )
+    addUtilities({
+      '.stroke-none': { stroke: 'none' },
+    })
   },
 
   strokeWidth: createUtilityPlugin('strokeWidth', [['stroke', ['stroke-width']]], {
@@ -1962,6 +1973,7 @@ export let corePlugins = {
 
   outlineOffset: createUtilityPlugin('outlineOffset', [['outline-offset', ['outline-offset']]], {
     type: ['length', 'number', 'percentage'],
+    supportsNegativeValues: true,
   }),
 
   outlineColor: ({ matchUtilities, theme }) => {
