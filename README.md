@@ -264,31 +264,7 @@ module.exports = {
 }
 ```
 
-**Using with Build Tools:**
-
-- **Vite:** Works out of the box with PostCSS
-- **Webpack:** Use `postcss-loader`
-- **Parcel:** Automatic PostCSS detection
-- **Rollup:** Use `rollup-plugin-postcss`
-
-See the official [Tailwind CSS framework guides](https://tailwindcss.com/docs/installation/framework-guides) for detailed integration instructions.
-
 ------
 
-## Documentation
+## Contributing to Tailwind , Not Me
 
-For full documentation, visit [tailwindcss.com](https://tailwindcss.com/).
-
-## Community
-
-For help, discussion about best practices, or any other conversation that would benefit from being searchable:
-
-[Discuss Tailwind CSS on GitHub](https://github.com/tailwindcss/tailwindcss/discussions)
-
-For casual chit-chat with others using the framework:
-
-[Join the Tailwind CSS Discord Server](https://discord.gg/7NF8GNe)
-
-## Contributing
-
-If you're interested in contributing to Tailwind CSS, please read our [contributing docs](https://github.com/tailwindcss/tailwindcss/blob/master/.github/CONTRIBUTING.md) **before submitting a pull request**.
