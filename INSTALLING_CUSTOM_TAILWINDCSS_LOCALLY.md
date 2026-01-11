@@ -1,11 +1,11 @@
-# Installing Custom Local Tailwind CSS
+# Installing Custom Saulwind CSS Locally
 
 This guide explains how to set up a custom local version of Tailwind CSS in a Vite + React project.
 
 ## Prerequisites
 
 - Node.js and npm installed
-- A local Tailwind CSS package (e.g., `tailwindcss-3.1.0.tgz`)
+- A local Tailwind CSS compatible package (e.g., `tailwindcss-3.1.0.tgz`)
 
 ## Installation Steps
 
@@ -18,7 +18,7 @@ In your `package.json`, add the following dependencies:
   "dependencies": {
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "tailwindcss": "file:../path/to/tailwindcss-3.1.0.tgz"
+    "tailwindcss": "file:../saulwindcss/dist/3.4.0/tailwindcss-3.4.0.tgz"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.23",
@@ -147,25 +147,3 @@ function App() {
   )
 }
 ```
-
-## Troubleshooting
-
-### Styles Not Appearing
-
-1. **Check config file extensions**: If you have `"type": "module"` in package.json, use `.cjs` extensions
-2. **Verify PostCSS config exists**: Make sure `postcss.config.cjs` is in the project root
-3. **Check CSS import**: Ensure `index.css` is imported in `main.jsx`
-4. **Hard refresh**: Try Ctrl+Shift+R (or Cmd+Shift+R on Mac) to clear browser cache
-5. **Check build output**: Run `npm run build` and look for warnings about content configuration
-
-### Content Configuration Warning
-
-If you see "The content option in your Tailwind CSS configuration is missing or empty":
-- Verify the `content` array in `tailwind.config.cjs` includes the correct file paths
-- Make sure the config file is using `.cjs` extension with `module.exports` syntax
-
-## Additional Resources
-
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-- [PostCSS Configuration](https://postcss.org/docs/)
-- [Vite Configuration](https://vitejs.dev/config/)
