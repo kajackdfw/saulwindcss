@@ -1,9 +1,10 @@
 <h1>
-  Tailwind CSS v3.4.0 (JavaScript-only Fork)
+  Saulwind CSS v3.4.0 (JavaScript-only Fork)
 </h1>
 
 A utility-first CSS framework for rapidly building custom user interfaces.
 
+**Forked from** - TailwindCSS v3.0.24
 **JavaScript-only version** - No Rust/Oxide dependencies required.
 
 <p>
