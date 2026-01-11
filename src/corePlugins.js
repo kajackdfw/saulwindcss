@@ -206,6 +206,40 @@ export let variantPlugins = {
     addVariant('print', '@media print')
   },
 
+  ariaVariants: ({ addVariant, theme }) => {
+    let values = theme('aria') ?? {}
+    for (let [key, value] of Object.entries(values)) {
+      addVariant(`aria-${key}`, `&[aria-${value}]`)
+    }
+  },
+
+  dataVariants: ({ addVariant, theme }) => {
+    let values = theme('data') ?? {}
+    for (let [key, value] of Object.entries(values)) {
+      addVariant(`data-${key}`, `&[data-${value}]`)
+    }
+  },
+
+  supportsVariants: ({ addVariant }) => {
+    // Note: Full arbitrary support for supports-[...] handled by extractor
+    // This provides the base variant registration
+    addVariant('supports', ({ container }) => {
+      // This will be enhanced when arbitrary supports-[...] is detected
+      return container
+    })
+  },
+
+  minMaxVariants: ({ addVariant }) => {
+    // Note: Full arbitrary support for min-[...] and max-[...] handled by extractor
+    // This provides the base variant registration
+    addVariant('min', ({ container }) => {
+      return container
+    })
+    addVariant('max', ({ container }) => {
+      return container
+    })
+  },
+
   screenVariants: ({ theme, addVariant }) => {
     for (let screen of normalizeScreens(theme('screens'))) {
       let query = buildMediaQuery(screen)

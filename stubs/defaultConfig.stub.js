@@ -930,6 +930,20 @@ module.exports = {
       40: '40',
       50: '50',
     },
+    aria: {
+      busy: 'busy="true"',
+      checked: 'checked="true"',
+      disabled: 'disabled="true"',
+      expanded: 'expanded="true"',
+      hidden: 'hidden="true"',
+      pressed: 'pressed="true"',
+      readonly: 'readonly="true"',
+      required: 'required="true"',
+      selected: 'selected="true"',
+    },
+    data: {
+      // Users can extend this with custom data attribute patterns
+    },
   },
   variantOrder: [
     'first',

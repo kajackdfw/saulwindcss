@@ -13,6 +13,11 @@ const PATTERNS = [
   /([^${(<>"'`\s]*\['[^"'`\s]*'\])/.source, // `content-['hello']` but not `content-['hello']']`
   /([^${(<>"'`\s]*\["[^"'`\s]*"\])/.source, // `content-["hello"]` but not `content-["hello"]"]`
   /(\[&.*?\]:[^<>"'`\s]*)/.source, // Arbitrary variants: `[&:hover]:text-red-500`, `[&[data-active]]:bg-blue`, `[&_p]:text-sm`
+  /(\baria-\[[^\]]+\]:[^<>"'`\s]*)/.source, // ARIA variants: `aria-[checked]:bg-blue-500`, `aria-[disabled]:opacity-50`
+  /(\bdata-\[[^\]]+\]:[^<>"'`\s]*)/.source, // Data variants: `data-[state=open]:block`, `data-[loading]:opacity-50`
+  /(\bsupports-\[[^\]]+\]:[^<>"'`\s]*)/.source, // Feature query variants: `supports-[display:grid]:grid`
+  /(\bmin-\[[^\]]+\]:[^<>"'`\s]*)/.source, // Min-width variants: `min-[768px]:flex`
+  /(\bmax-\[[^\]]+\]:[^<>"'`\s]*)/.source, // Max-width variants: `max-[1024px]:hidden`
   /([^<>"'`\s]*\[[^<>"'`\s]*:[^\]\s]*\])/.source, // `[attr:value]`
   /([^<>"'`\s]*\[[^<>"'`\s]*:'[^"'`\s]*'\])/.source, // `[content:'hello']` but not `[content:"hello"]`
   /([^<>"'`\s]*\[[^<>"'`\s]*:"[^"'`\s]*"\])/.source, // `[content:"hello"]` but not `[content:'hello']`
