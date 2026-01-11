@@ -457,6 +457,37 @@ export let corePlugins = {
     { supportsNegativeValues: true }
   ),
 
+  insetInline: createUtilityPlugin('insetInline', [['inset-inline', ['inset-inline']]], {
+    supportsNegativeValues: true,
+  }),
+  insetInlineStart: createUtilityPlugin(
+    'insetInlineStart',
+    [
+      ['start', ['inset-inline-start']],
+      ['inset-inline-start', ['inset-inline-start']],
+    ],
+    { supportsNegativeValues: true }
+  ),
+  insetInlineEnd: createUtilityPlugin(
+    'insetInlineEnd',
+    [
+      ['end', ['inset-inline-end']],
+      ['inset-inline-end', ['inset-inline-end']],
+    ],
+    { supportsNegativeValues: true }
+  ),
+  insetBlock: createUtilityPlugin('insetBlock', [['inset-block', ['inset-block']]], {
+    supportsNegativeValues: true,
+  }),
+  insetBlockStart: createUtilityPlugin(
+    'insetBlockStart',
+    [['inset-block-start', ['inset-block-start']]],
+    { supportsNegativeValues: true }
+  ),
+  insetBlockEnd: createUtilityPlugin('insetBlockEnd', [['inset-block-end', ['inset-block-end']]], {
+    supportsNegativeValues: true,
+  }),
+
   isolation: ({ addUtilities }) => {
     addUtilities({
       '.isolate': { isolation: 'isolate' },
@@ -505,6 +536,39 @@ export let corePlugins = {
         ['ml', ['margin-left']],
       ],
     ],
+    { supportsNegativeValues: true }
+  ),
+
+  marginInline: createUtilityPlugin('marginInline', [['margin-inline', ['margin-inline']]], {
+    supportsNegativeValues: true,
+  }),
+  marginInlineStart: createUtilityPlugin(
+    'marginInlineStart',
+    [
+      ['ms', ['margin-inline-start']],
+      ['margin-inline-start', ['margin-inline-start']],
+    ],
+    { supportsNegativeValues: true }
+  ),
+  marginInlineEnd: createUtilityPlugin(
+    'marginInlineEnd',
+    [
+      ['me', ['margin-inline-end']],
+      ['margin-inline-end', ['margin-inline-end']],
+    ],
+    { supportsNegativeValues: true }
+  ),
+  marginBlock: createUtilityPlugin('marginBlock', [['margin-block', ['margin-block']]], {
+    supportsNegativeValues: true,
+  }),
+  marginBlockStart: createUtilityPlugin(
+    'marginBlockStart',
+    [['margin-block-start', ['margin-block-start']]],
+    { supportsNegativeValues: true }
+  ),
+  marginBlockEnd: createUtilityPlugin(
+    'marginBlockEnd',
+    [['margin-block-end', ['margin-block-end']]],
     { supportsNegativeValues: true }
   ),
 
@@ -868,6 +932,48 @@ export let corePlugins = {
       ['scroll-pb', ['scroll-padding-bottom']],
       ['scroll-pl', ['scroll-padding-left']],
     ],
+  ]),
+
+  scrollMarginInline: createUtilityPlugin('scrollMarginInline', [
+    ['scroll-margin-inline', ['scroll-margin-inline']],
+  ]),
+  scrollMarginInlineStart: createUtilityPlugin('scrollMarginInlineStart', [
+    ['scroll-ms', ['scroll-margin-inline-start']],
+    ['scroll-margin-inline-start', ['scroll-margin-inline-start']],
+  ]),
+  scrollMarginInlineEnd: createUtilityPlugin('scrollMarginInlineEnd', [
+    ['scroll-me', ['scroll-margin-inline-end']],
+    ['scroll-margin-inline-end', ['scroll-margin-inline-end']],
+  ]),
+  scrollMarginBlock: createUtilityPlugin('scrollMarginBlock', [
+    ['scroll-margin-block', ['scroll-margin-block']],
+  ]),
+  scrollMarginBlockStart: createUtilityPlugin('scrollMarginBlockStart', [
+    ['scroll-margin-block-start', ['scroll-margin-block-start']],
+  ]),
+  scrollMarginBlockEnd: createUtilityPlugin('scrollMarginBlockEnd', [
+    ['scroll-margin-block-end', ['scroll-margin-block-end']],
+  ]),
+
+  scrollPaddingInline: createUtilityPlugin('scrollPaddingInline', [
+    ['scroll-padding-inline', ['scroll-padding-inline']],
+  ]),
+  scrollPaddingInlineStart: createUtilityPlugin('scrollPaddingInlineStart', [
+    ['scroll-ps', ['scroll-padding-inline-start']],
+    ['scroll-padding-inline-start', ['scroll-padding-inline-start']],
+  ]),
+  scrollPaddingInlineEnd: createUtilityPlugin('scrollPaddingInlineEnd', [
+    ['scroll-pe', ['scroll-padding-inline-end']],
+    ['scroll-padding-inline-end', ['scroll-padding-inline-end']],
+  ]),
+  scrollPaddingBlock: createUtilityPlugin('scrollPaddingBlock', [
+    ['scroll-padding-block', ['scroll-padding-block']],
+  ]),
+  scrollPaddingBlockStart: createUtilityPlugin('scrollPaddingBlockStart', [
+    ['scroll-padding-block-start', ['scroll-padding-block-start']],
+  ]),
+  scrollPaddingBlockEnd: createUtilityPlugin('scrollPaddingBlockEnd', [
+    ['scroll-padding-block-end', ['scroll-padding-block-end']],
   ]),
 
   listStylePosition: ({ addUtilities }) => {
@@ -1273,6 +1379,19 @@ export let corePlugins = {
     ],
   ]),
 
+  borderStartStartRadius: createUtilityPlugin('borderStartStartRadius', [
+    ['rounded-ss', ['border-start-start-radius']],
+  ]),
+  borderStartEndRadius: createUtilityPlugin('borderStartEndRadius', [
+    ['rounded-se', ['border-start-end-radius']],
+  ]),
+  borderEndStartRadius: createUtilityPlugin('borderEndStartRadius', [
+    ['rounded-es', ['border-end-start-radius']],
+  ]),
+  borderEndEndRadius: createUtilityPlugin('borderEndEndRadius', [
+    ['rounded-ee', ['border-end-end-radius']],
+  ]),
+
   borderWidth: createUtilityPlugin(
     'borderWidth',
     [
@@ -1611,6 +1730,23 @@ export let corePlugins = {
     ],
   ]),
 
+  paddingInline: createUtilityPlugin('paddingInline', [['padding-inline', ['padding-inline']]]),
+  paddingInlineStart: createUtilityPlugin('paddingInlineStart', [
+    ['ps', ['padding-inline-start']],
+    ['padding-inline-start', ['padding-inline-start']],
+  ]),
+  paddingInlineEnd: createUtilityPlugin('paddingInlineEnd', [
+    ['pe', ['padding-inline-end']],
+    ['padding-inline-end', ['padding-inline-end']],
+  ]),
+  paddingBlock: createUtilityPlugin('paddingBlock', [['padding-block', ['padding-block']]]),
+  paddingBlockStart: createUtilityPlugin('paddingBlockStart', [
+    ['padding-block-start', ['padding-block-start']],
+  ]),
+  paddingBlockEnd: createUtilityPlugin('paddingBlockEnd', [
+    ['padding-block-end', ['padding-block-end']],
+  ]),
+
   textAlign: ({ addUtilities }) => {
     addUtilities({
       '.text-left': { 'text-align': 'left' },
@@ -1785,6 +1921,29 @@ export let corePlugins = {
   letterSpacing: createUtilityPlugin('letterSpacing', [['tracking', ['letterSpacing']]], {
     supportsNegativeValues: true,
   }),
+
+  lineClamp: ({ matchUtilities, addUtilities, theme }) => {
+    addUtilities({
+      '.line-clamp-none': {
+        overflow: 'visible',
+        display: 'block',
+        '-webkit-box-orient': 'horizontal',
+        '-webkit-line-clamp': 'none',
+      },
+    })
+
+    matchUtilities(
+      {
+        'line-clamp': (value) => ({
+          overflow: 'hidden',
+          display: '-webkit-box',
+          '-webkit-box-orient': 'vertical',
+          '-webkit-line-clamp': `${value}`,
+        }),
+      },
+      { values: theme('lineClamp') }
+    )
+  },
 
   textColor: ({ matchUtilities, theme, corePlugins }) => {
     matchUtilities(
