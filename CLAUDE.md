@@ -4,31 +4,41 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## About This Branch
 
-**Branch:** `javascript-fork-v3.2.0` (with v3.1 on `javascript-fork-v3.1`)
-**Version:** 3.2.0
+**Branch:** `javascript-fork-v3.3.0` (with v3.2 on `javascript-fork-v3.2.0`)
+**Version:** 3.3.0
 **Architecture:** JavaScript-only (no Rust dependencies)
 
-This is a JavaScript-only fork of Tailwind CSS v3, originally based on v3.0.24 - the last version before the Rust/Oxide engine was introduced. This branch has been upgraded with v3.2 features while maintaining the pure JavaScript/TypeScript architecture.
+This is a JavaScript-only fork of Tailwind CSS v3, originally based on v3.0.24 - the last version before the Rust/Oxide engine was introduced. This branch has been upgraded with v3.3 features while maintaining the pure JavaScript/TypeScript architecture.
 
-**Note:** The `main` branch contains v4 with Rust/pnpm/monorepo architecture. This document describes the `javascript-fork-v3.2.0` branch only.
+**Note:** The `main` branch contains v4 with Rust/pnpm/monorepo architecture. This document describes the `javascript-fork-v3.3.0` branch only.
 
-### v3.2.0 Update
+### v3.3.0 Update
 
-The v3.2.0 release includes key features from Tailwind CSS v3.2, adapted for JavaScript-only architecture:
+The v3.3.0 release includes key features from Tailwind CSS v3.3, adapted for JavaScript-only architecture:
 
 **New Features:**
-- ✅ ARIA attribute variants (`aria-checked:`, `aria-[disabled]:`)
-- ✅ Data attribute variants (`data-[state=open]:`, `data-[loading]:`)
-- ✅ CSS feature query variant (`supports-[display:grid]:`)
-- ✅ Min/max media query variants (`min-[768px]:`, `max-[1024px]:`)
-- ✅ New utilities (`break-keep`, `collapse`, `fill-none`, `stroke-none`, baseline alignment, negative outline-offset)
-- ✅ Configuration enhancements (`@config` directive, `relative: true`, font-feature-settings)
+- ✅ Extended color palette with 950 shades (added to all 22 color families: slate, gray, zinc, neutral, stone, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose)
+- ✅ Line-clamp utilities (`line-clamp-{1-6}`, `line-clamp-none`)
+- ✅ Comprehensive logical properties support:
+  - Inset properties (`inset-inline`, `inset-block`, `start-*`, `end-*`, `inset-inline-start`, `inset-inline-end`, `inset-block-start`, `inset-block-end`)
+  - Margin properties with shortcuts (`ms-*`, `me-*`, `margin-inline-start`, `margin-inline-end`, `margin-block-start`, `margin-block-end`)
+  - Padding properties with shortcuts (`ps-*`, `pe-*`, `padding-inline-start`, `padding-inline-end`, `padding-block-start`, `padding-block-end`)
+  - Border-radius logical (`rounded-ss`, `rounded-se`, `rounded-es`, `rounded-ee`)
+  - Scroll properties (`scroll-ms-*`, `scroll-me-*`, `scroll-ps-*`, `scroll-pe-*`)
+- ✅ New utility classes:
+  - `hyphens-{none|manual|auto}` - Text hyphenation control
+  - `caption-{top|bottom}` - Table caption positioning
+  - `list-image-*` - Custom list style images
+  - `whitespace-break-spaces` - Preserve whitespace with wrapping
+  - `justify-normal`, `justify-stretch` - Enhanced flex/grid alignment
+  - `content-normal`, `content-stretch` - Enhanced content alignment
 
 **Architecture Changes:**
-- Enhanced `src/corePlugins.js` with new variant plugins (aria, data, supports, min/max)
-- Updated `src/lib/defaultExtractor.js` to extract new variant patterns
-- Added new utility plugins for v3.2 features
-- Enhanced configuration loading in `src/lib/setupContextUtils.js`
+- Enhanced `src/public/colors.js` with 950 shade for all color palettes
+- Added line-clamp plugin in `src/corePlugins.js` with theme support
+- Added comprehensive logical property plugins (12+ new plugins)
+- Updated `stubs/defaultConfig.stub.js` with `lineClamp` and `listStyleImage` theme keys
+- Added new utility plugins for hyphens, caption-side, and enhanced whitespace/alignment
 - All changes maintain JavaScript-only architecture (no Rust/Oxide dependencies)
 
 ## Commands
