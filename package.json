@@ -1,7 +1,7 @@
 {
   "name": "tailwindcss",
   "version": "3.4.0",
-  "description": "A utility-first CSS framework for rapidly building custom user interfaces.",
+  "description": "A utility-first CSS framework for rapidly building custom user interfaces. (JavaScript-only v3.x fork)",
   "license": "MIT",
   "main": "lib/index.js",
   "repository": "https://github.com/tailwindlabs/tailwindcss.git",

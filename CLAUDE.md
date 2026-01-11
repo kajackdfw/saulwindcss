@@ -4,13 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## About This Branch
 
-**Branch:** `javascript-fork-v3.4.0` (with v3.3 on `javascript-fork-v3.3.0`)
+**Branch:** `main` (also available on `javascript-fork-v3.4.0`)
 **Version:** 3.4.0
 **Architecture:** JavaScript-only (no Rust dependencies)
 
-This is a JavaScript-only fork of Tailwind CSS v3, originally based on v3.0.24 - the last version before the Rust/Oxide engine was introduced. This branch has been upgraded with v3.4 features while maintaining the pure JavaScript/TypeScript architecture.
+This is a JavaScript-only fork of Tailwind CSS v3, originally based on v3.0.24 - the last version before the Rust/Oxide engine was introduced. The main branch has been upgraded with v3.4 features while maintaining the pure JavaScript/TypeScript architecture.
 
-**Note:** The `main` branch contains v4 with Rust/pnpm/monorepo architecture. This document describes the `javascript-fork-v3.4.0` branch only.
+**Note:** Tailwind CSS v4 is a separate project with Rust/Oxide architecture. This repository focuses on the JavaScript-only v3.x implementation. All v3.x versions (3.0.24, 3.1.0, 3.2.0, 3.3.0, 3.4.0) are preserved in dedicated branches.
 
 ### v3.4.0 Update
 

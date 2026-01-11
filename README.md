@@ -1,8 +1,10 @@
 <h1>
-  Tailwindcss 3.2 ( javaScript version, not Rusty )
+  Tailwind CSS v3.4.0 (JavaScript-only Fork)
 </h1>
 
 A utility-first CSS framework for rapidly building custom user interfaces.
+
+**JavaScript-only version** - No Rust/Oxide dependencies required.
 
 <p>
     <a href="https://github.com/tailwindlabs/tailwindcss/actions"><img src="https://img.shields.io/github/workflow/status/tailwindlabs/tailwindcss/Node.js%20CI" alt="Build Status"></a>
@@ -15,72 +17,83 @@ A utility-first CSS framework for rapidly building custom user interfaces.
 
 ## About This Fork
 
-**Version:** 3.2.0 (JavaScript-only fork)
+**Version:** 3.4.0 (JavaScript-only fork)
 
 This is a JavaScript-only fork of Tailwind CSS, originally based on version 3.0.24 - the last version before the Rust/Oxide engine was introduced. This fork maintains the pure JavaScript/TypeScript architecture without requiring Rust toolchain dependencies.
 
-### What's New in v3.2
+**Note:** Tailwind CSS v4 is a complete rewrite in Rust with the Oxide engine. This fork focuses on the JavaScript implementation with modern v3.x features.
 
-This version includes key features from Tailwind CSS v3.2, adapted for the JavaScript-only architecture:
+### What's New in v3.4.0
 
-**New Utilities:**
-- `break-keep` - Prevent breaking within words (`word-break: keep-all`) for CJK languages
-- `collapse` - Collapse table rows/columns (`visibility: collapse`)
-- `fill-none` / `stroke-none` - Remove SVG fill or stroke
-- `place-content-baseline` / `place-items-baseline` / `content-baseline` - Baseline alignment for grid/flex
-- Negative `outline-offset-*` values - Support for negative outline offsets
+This version includes modern CSS features from Tailwind CSS v3.4, adapted for the JavaScript-only architecture:
 
-**New Variants:**
-- `aria-*` - Style based on ARIA attributes (`aria-checked:bg-blue-500`, `aria-[disabled]:opacity-50`)
-- `data-*` - Style based on data attributes (`data-[state=open]:block`, `data-[loading]:opacity-50`)
-- `supports-*` - CSS feature query variant (`supports-[display:grid]:grid`)
-- `min-*` / `max-*` - Arbitrary media queries (`min-[768px]:flex`, `max-[1024px]:hidden`)
+**Modern Viewport Units:**
+- `h-dvh`, `h-svh`, `h-lvh` - Dynamic/Small/Large viewport height units
+- `w-dvw`, `w-svw`, `w-lvw` - Dynamic/Small/Large viewport width units
+- Better mobile browser support with viewport units that account for dynamic UI (URL bars, etc.)
 
-**Configuration Enhancements:**
-- `relative: true` - Resolve content paths relative to config file location
-- Font feature settings - Support `font-feature-settings` in `fontFamily` theme
+**Size Utilities:**
+- `size-*` - Combined width and height utilities (e.g., `size-4` sets both `width: 1rem` and `height: 1rem`)
+- Supports all spacing values, fractions (`size-1/2`), and arbitrary values (`size-[200px]`)
 
-**Example Config:**
-```js
-module.exports = {
-  relative: true, // Resolve content paths relative to config file
-  content: ['./src/**/*.html'], // Now relative to config location
-  theme: {
-    fontFamily: {
-      sans: ['Inter var', { fontFeatureSettings: '"cv11", "ss01"' }],
-    },
-  },
-}
-```
+**:has() Pseudo-Class Variant:**
+- `has-[selector]:utility` - Style parents based on descendants
+- Examples: `has-[:checked]:bg-blue-500`, `has-[>a]:underline`, `has-[img]:p-4`
+- Modern contextual styling for parent elements
+
+**Text Wrapping:**
+- `text-balance` - Balance text across lines for better headlines
+- `text-pretty` - Better text wrapping avoiding orphans and widows
+- `text-wrap` / `text-nowrap` - Standard wrapping controls
+
+**CSS Subgrid:**
+- `grid-cols-subgrid` - Inherit parent grid columns
+- `grid-rows-subgrid` - Inherit parent grid rows
+
+**Accessibility:**
+- `forced-colors:` variant - Style for Windows High Contrast Mode
 
 **Example Usage:**
 ```html
-<!-- ARIA variants -->
-<button class="aria-checked:bg-blue-500 aria-disabled:opacity-50">Toggle</button>
+<!-- Modern viewport units -->
+<div class="h-dvh">Full dynamic viewport height</div>
+<div class="min-h-svh">Minimum small viewport height</div>
 
-<!-- Data attribute variants -->
-<div class="data-[state=open]:block data-[state=closed]:hidden">Content</div>
+<!-- Size utilities -->
+<div class="size-16">Square 16x16</div>
+<div class="size-full">Full width and height</div>
 
-<!-- Feature queries -->
-<div class="supports-[display:grid]:grid supports-[display:flex]:flex">Layout</div>
+<!-- :has() variant -->
+<div class="has-[:checked]:bg-blue-500">
+  <input type="checkbox">Checked parent changes
+</div>
 
-<!-- Arbitrary media queries -->
-<div class="min-[768px]:flex max-[1024px]:hidden">Responsive</div>
+<!-- Text wrapping -->
+<h1 class="text-balance">Balanced headline text</h1>
+<p class="text-pretty">Pretty wrapped paragraph</p>
 
-<!-- New utilities -->
-<div class="break-keep -outline-offset-2">Text with outline</div>
+<!-- Subgrid -->
+<div class="grid grid-cols-3">
+  <div class="grid grid-cols-subgrid col-span-2">Subgrid item</div>
+</div>
+
+<!-- Forced colors (accessibility) -->
+<div class="forced-colors:border-4">High contrast border</div>
 ```
 
-### Migration Plan
+### Version History
 
-This fork intends to incrementally migrate features and patches from later versions:
-- **v3.1** - ✅ **DONE** - Arbitrary variants, new utilities, new variants
-- **v3.2** - ✅ **DONE** - ARIA/data variants, @supports, min/max queries, baseline alignment, configuration enhancements
-- **v3.4** - 📋 **PLANNED** - Modern CSS features (subgrid, :has(), text-wrap, size-* utilities)
+This fork incrementally migrates features from Tailwind CSS releases while maintaining JavaScript-only architecture:
 
-Features are ported selectively to maintain the JavaScript-only architecture while bringing in valuable enhancements from later releases.
+- **v3.0.24** - ✅ **BASE** - Original JavaScript-only fork
+- **v3.1.0** - ✅ **DONE** - Arbitrary variants, new utilities, new variants
+- **v3.2.0** - ✅ **DONE** - ARIA/data variants, @supports, min/max queries, baseline alignment
+- **v3.3.0** - ✅ **DONE** - Extended colors (950 shades), line-clamp, logical properties
+- **v3.4.0** - ✅ **DONE** - Viewport units, size utilities, :has(), text-wrap, subgrid
 
-**v3.2 Status:** 19/20 tests passing (95% pass rate). All core features implemented and tested.
+All versions are preserved in `lib/VERSION/` directories and available as tarballs in `dist/VERSION/`.
+
+See `CHANGELOG.md` for detailed release notes.
 
 ### Installation and Building
 
@@ -131,10 +144,10 @@ mkdir my-website
 cd my-website
 npm init -y
 
-# Install Tailwind CSS v3.1.0 from tarball
+# Install Tailwind CSS v3.4.0 from tarball
 # Option A: Clone this repo and install locally
 git clone https://github.com/YOUR_USERNAME/tailwindcss.git
-npm install ./tailwindcss/dist/3.1.0/tailwindcss-3.1.0.tgz
+npm install ./tailwindcss/dist/3.4.0/tailwindcss-3.4.0.tgz
 
 **2. Create Tailwind Config**
 
