@@ -10,6 +10,7 @@ import { formatVariantSelector, finalizeSelector } from '../util/formatVariantSe
 import { asClass } from '../util/nameClass'
 import { normalize } from '../util/dataTypes'
 import isValidArbitraryValue from '../util/isValidArbitraryValue'
+import escapeClassName from '../util/escapeClassName'
 
 let classNameParser = selectorParser((selectors) => {
   return selectors.first.filter(({ type }) => type === 'class').pop().value
@@ -21,22 +22,37 @@ function getClassNameFromSelector(selector) {
 
 // Extract arbitrary variants from a candidate
 // Example: "[&:nth-child(3)]:hover:text-red-500" ->
-// { arbitraryVariants: ["&:nth-child(3)"], remaining: "hover:text-red-500" }
+// { arbitraryVariants: [{type: 'v3.1', selector: '&:nth-child(3)'}], remaining: "hover:text-red-500" }
+// Also extracts v3.2 arbitrary variants like "aria-[checked]:text-red" ->
+// { arbitraryVariants: [{type: 'aria', value: 'checked'}], remaining: "text-red" }
 function extractArbitraryVariants(candidate, separator) {
   let arbitraryVariants = []
   let remaining = candidate
 
-  // Match patterns like [&...]:
-  // The regex matches: [ followed by any chars not containing ], then ], then separator
-  let regex = new RegExp(`^\\[([^\\]]+)\\]\\${separator}`)
-
   while (true) {
-    let match = remaining.match(regex)
-    if (!match) break
+    let matched = false
 
-    let selector = match[1]
-    arbitraryVariants.push(selector)
-    remaining = remaining.slice(match[0].length)
+    // Match v3.1 arbitrary variants: [&...]:
+    let v31Regex = new RegExp(`^\\[([^\\]]+)\\]\\${separator}`)
+    let v31Match = remaining.match(v31Regex)
+    if (v31Match) {
+      arbitraryVariants.push({ type: 'v3.1', selector: v31Match[1] })
+      remaining = remaining.slice(v31Match[0].length)
+      matched = true
+      continue
+    }
+
+    // Match v3.2 arbitrary variants: aria-[...]:, data-[...]:, supports-[...]:, min-[...]:, max-[...]:
+    let v32Regex = new RegExp(`^(aria|data|supports|min|max)-\\[([^\\]]+)\\]\\${separator}`)
+    let v32Match = remaining.match(v32Regex)
+    if (v32Match) {
+      arbitraryVariants.push({ type: v32Match[1], value: v32Match[2] })
+      remaining = remaining.slice(v32Match[0].length)
+      matched = true
+      continue
+    }
+
+    if (!matched) break
   }
 
   return { arbitraryVariants, remaining }
@@ -177,7 +193,8 @@ function applyVariant(variant, matches, context) {
     return matches
   }
 
-  // Handle v3.2 arbitrary variants: aria-[...], data-[...], supports-[...], min-[...], max-[...]
+  // Check if this is a v3.2 arbitrary variant that wasn't extracted
+  // (happens when arbitrary variant comes after normal variants)
   let ariaMatch = variant.match(/^aria-\[(.+)\]$/)
   let dataMatch = variant.match(/^data-\[(.+)\]$/)
   let supportsMatch = variant.match(/^supports-\[(.+)\]$/)
@@ -185,64 +202,59 @@ function applyVariant(variant, matches, context) {
   let maxMatch = variant.match(/^max-\[(.+)\]$/)
 
   if (ariaMatch || dataMatch || supportsMatch || minMatch || maxMatch) {
-    let result = []
+    // Handle as arbitrary variant
+    if (ariaMatch || dataMatch) {
+      // aria/data variants: add attribute selector
+      let attrName = ariaMatch ? 'aria' : 'data'
+      let attrValue = ariaMatch ? ariaMatch[1] : dataMatch[1]
 
-    for (let [meta, rule] of matches) {
-      let container = postcss.root({ nodes: [rule.clone()] })
-      let collectedFormats = []
+      return matches.map(([meta, rule]) => {
+        let container = postcss.root({ nodes: [rule.clone()] })
 
-      // Apply the variant transformation
-      if (ariaMatch) {
-        let ariaValue = ariaMatch[1]
-        collectedFormats.push(`&[aria-${ariaValue}]`)
-      } else if (dataMatch) {
-        let dataValue = dataMatch[1]
-        collectedFormats.push(`&[data-${dataValue}]`)
-      } else if (supportsMatch) {
-        let supportsValue = supportsMatch[1]
+        container.walkRules((r) => {
+          // Add attribute selector
+          if (attrValue.includes('=')) {
+            // Has a value like data-[state=open]
+            let [key, val] = attrValue.split('=')
+            r.selector = `${r.selector}[${attrName}-${key}="${val}"]`
+          } else {
+            // Just a key like data-[loading]
+            r.selector = `${r.selector}[${attrName}-${attrValue}]`
+          }
+        })
+
+        return [meta, container.nodes[0]]
+      })
+    } else if (supportsMatch) {
+      // supports variant: wrap in @supports at-rule
+      let supportsValue = supportsMatch[1]
+
+      return matches.map(([meta, rule]) => {
         let atRule = postcss.atRule({
           name: 'supports',
           params: `(${supportsValue})`,
         })
-        let nodes = container.nodes
-        container.removeAll()
-        atRule.append(nodes)
-        container.append(atRule)
-      } else if (minMatch) {
-        let minValue = minMatch[1]
+        atRule.append(rule.clone())
+        atRule.raws.tailwind = { ...atRule.raws.tailwind, parentLayer: meta.layer }
+
+        return [meta, atRule]
+      })
+    } else if (minMatch || maxMatch) {
+      // min/max variants: wrap in @media at-rule
+      let mediaValue = minMatch ? minMatch[1] : maxMatch[1]
+      let mediaQuery = minMatch ? `(min-width: ${mediaValue})` : `(max-width: ${mediaValue})`
+
+      return matches.map(([meta, rule]) => {
         let atRule = postcss.atRule({
           name: 'media',
-          params: `(min-width: ${minValue})`,
+          params: mediaQuery,
         })
-        let nodes = container.nodes
-        container.removeAll()
-        atRule.append(nodes)
-        container.append(atRule)
-      } else if (maxMatch) {
-        let maxValue = maxMatch[1]
-        let atRule = postcss.atRule({
-          name: 'media',
-          params: `(max-width: ${maxValue})`,
-        })
-        let nodes = container.nodes
-        container.removeAll()
-        atRule.append(nodes)
-        container.append(atRule)
-      }
+        atRule.append(rule.clone())
+        atRule.raws.tailwind = { ...atRule.raws.tailwind, parentLayer: meta.layer }
 
-      container.nodes[0].raws.tailwind = { ...container.nodes[0].raws.tailwind, parentLayer: meta.layer }
-
-      let withMeta = [
-        {
-          ...meta,
-          collectedFormats: (meta.collectedFormats ?? []).concat(collectedFormats),
-        },
-        container.nodes[0],
-      ]
-      result.push(withMeta)
+        return [meta, atRule]
+      })
     }
-
-    return result
   }
 
   if (context.variantMap.has(variant)) {
@@ -668,30 +680,105 @@ function* resolveMatches(candidate, context) {
       matches = applyVariant(variant, matches, context)
     }
 
-    // Apply arbitrary variants
-    for (let arbitraryVariant of arbitraryVariants) {
-      if (!isValidArbitraryVariant(arbitraryVariant)) {
-        // Skip invalid arbitrary variants
-        log.warn([
-          `The arbitrary variant \`[${arbitraryVariant}]\` in \`${candidate}\` is invalid and will be skipped.`,
-          `Arbitrary variants must start with \`&\` and have balanced brackets/parentheses.`,
-        ])
-        continue
-      }
+    // Update class names if arbitrary variants are present
+    if (arbitraryVariants.length > 0 && remaining !== candidate) {
+      let oldClassName = `.${escapeClassName(remaining)}`
+      let newClassName = `.${escapeClassName(candidate)}`
 
-      let selector = escapeArbitraryVariant(arbitraryVariant)
-
-      // Apply the arbitrary variant to all matches
       matches = matches.map(([meta, rule]) => {
         let container = postcss.root({ nodes: [rule.clone()] })
 
         container.walkRules((r) => {
-          // Replace & with the current selector in the arbitrary variant
-          r.selector = selector.replace(/&/g, r.selector)
+          r.selector = r.selector.replace(oldClassName, newClassName)
         })
 
         return [meta, container.nodes[0]]
       })
+    }
+
+    // Apply arbitrary variants
+    for (let arbitraryVariant of arbitraryVariants) {
+      if (arbitraryVariant.type === 'v3.1') {
+        // v3.1 arbitrary variants like [&:hover]:
+        let selector = arbitraryVariant.selector
+
+        if (!isValidArbitraryVariant(selector)) {
+          // Skip invalid arbitrary variants
+          log.warn([
+            `The arbitrary variant \`[${selector}]\` in \`${candidate}\` is invalid and will be skipped.`,
+            `Arbitrary variants must start with \`&\` and have balanced brackets/parentheses.`,
+          ])
+          continue
+        }
+
+        selector = escapeArbitraryVariant(selector)
+
+        // Apply the arbitrary variant to all matches
+        matches = matches.map(([meta, rule]) => {
+          let container = postcss.root({ nodes: [rule.clone()] })
+
+          container.walkRules((r) => {
+            // Replace & with the current selector in the arbitrary variant
+            r.selector = selector.replace(/&/g, r.selector)
+          })
+
+          return [meta, container.nodes[0]]
+        })
+      } else if (arbitraryVariant.type === 'aria' || arbitraryVariant.type === 'data') {
+        // v3.2 aria/data variants: add attribute selector
+        let attrName = arbitraryVariant.type
+        let attrValue = arbitraryVariant.value
+
+        matches = matches.map(([meta, rule]) => {
+          let container = postcss.root({ nodes: [rule.clone()] })
+
+          container.walkRules((r) => {
+            // Add attribute selector
+            if (attrValue.includes('=')) {
+              // Has a value like data-[state=open]
+              let [key, val] = attrValue.split('=')
+              r.selector = `${r.selector}[${attrName}-${key}="${val}"]`
+            } else {
+              // Just a key like data-[loading]
+              r.selector = `${r.selector}[${attrName}-${attrValue}]`
+            }
+          })
+
+          return [meta, container.nodes[0]]
+        })
+      } else if (arbitraryVariant.type === 'supports') {
+        // v3.2 supports variant: wrap in @supports at-rule
+        let supportsValue = arbitraryVariant.value
+
+        matches = matches.map(([meta, rule]) => {
+          let atRule = postcss.atRule({
+            name: 'supports',
+            params: `(${supportsValue})`,
+          })
+          atRule.append(rule.clone())
+          atRule.raws.tailwind = { ...atRule.raws.tailwind, parentLayer: meta.layer }
+
+          return [meta, atRule]
+        })
+      } else if (arbitraryVariant.type === 'min' || arbitraryVariant.type === 'max') {
+        // v3.2 min/max variants: wrap in @media at-rule
+        let mediaValue = arbitraryVariant.value
+        let mediaQuery =
+          arbitraryVariant.type === 'min'
+            ? `(min-width: ${mediaValue})`
+            : `(max-width: ${mediaValue})`
+
+        matches = matches.map(([meta, rule]) => {
+          let atRule = postcss.atRule({
+            name: 'media',
+            params: mediaQuery,
+          })
+          atRule.append(rule.clone())
+          atRule.raws.tailwind = { ...atRule.raws.tailwind, parentLayer: meta.layer }
+
+          return [meta, atRule]
+        })
+      }
     }
 
     for (let match of matches) {

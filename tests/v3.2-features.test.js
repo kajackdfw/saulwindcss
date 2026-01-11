@@ -83,10 +83,10 @@ describe('v3.2 new utilities', () => {
     return run('@tailwind utilities', config).then((result) => {
       expect(result.css).toMatchFormattedCss(css`
         .-outline-offset-2 {
-          outline-offset: -0.5rem;
+          outline-offset: -2px;
         }
         .outline-offset-4 {
-          outline-offset: 1rem;
+          outline-offset: 4px;
         }
       `)
     })
@@ -106,11 +106,11 @@ describe('v3.2 ARIA variants', () => {
 
     return run('@tailwind utilities', config).then((result) => {
       expect(result.css).toMatchFormattedCss(css`
-        .aria-checked\\:bg-blue-500[aria-checked='true'] {
+        .aria-checked\:bg-blue-500[aria-checked="true"] {
           --tw-bg-opacity: 1;
           background-color: rgb(59 130 246 / var(--tw-bg-opacity));
         }
-        .aria-disabled\\:opacity-50[aria-disabled='true'] {
+        .aria-disabled\:opacity-50[aria-disabled="true"] {
           opacity: 0.5;
         }
       `)
@@ -129,13 +129,13 @@ describe('v3.2 ARIA variants', () => {
 
     return run('@tailwind utilities', config).then((result) => {
       expect(result.css).toMatchFormattedCss(css`
-        .aria-\\[sort\\=ascending\\]\\:rotate-0[aria-sort='ascending'] {
+        .aria-\[sort\=ascending\]\:rotate-0[aria-sort="ascending"] {
           --tw-rotate: 0deg;
           transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate))
             skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x))
             scaleY(var(--tw-scale-y));
         }
-        .aria-\\[current\\=page\\]\\:font-bold[aria-current='page'] {
+        .aria-\[current\=page\]\:font-bold[aria-current="page"] {
           font-weight: 700;
         }
       `)
@@ -156,10 +156,10 @@ describe('v3.2 data attribute variants', () => {
 
     return run('@tailwind utilities', config).then((result) => {
       expect(result.css).toMatchFormattedCss(css`
-        .data-\\[state\\=open\\]\\:block[data-state='open'] {
+        .data-\\[state\=open\\]\:block[data-state="open"] {
           display: block;
         }
-        .data-\\[loading\\]\\:opacity-50[data-loading] {
+        .data-\\[loading\\]\:opacity-50[data-loading] {
           opacity: 0.5;
         }
       `)
@@ -178,7 +178,7 @@ describe('v3.2 data attribute variants', () => {
 
     return run('@tailwind utilities', config).then((result) => {
       expect(result.css).toMatchFormattedCss(css`
-        .hover\\:data-\\[active\\]\\:bg-blue-500:hover[data-active] {
+        .hover\:data-\\[active\\]\:bg-blue-500:hover[data-active] {
           --tw-bg-opacity: 1;
           background-color: rgb(59 130 246 / var(--tw-bg-opacity));
         }
@@ -201,12 +201,12 @@ describe('v3.2 supports variants', () => {
     return run('@tailwind utilities', config).then((result) => {
       expect(result.css).toMatchFormattedCss(css`
         @supports (display: grid) {
-          .supports-\\[display\\:grid\\]\\:grid {
+          .supports-\\[display\:grid\\]\:grid {
             display: grid;
           }
         }
         @supports (backdrop-filter) {
-          .supports-\\[backdrop-filter\\]\\:backdrop-blur-sm {
+          .supports-\\[backdrop-filter\\]\:backdrop-blur-sm {
             --tw-backdrop-blur: blur(4px);
             -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness)
               var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate)
@@ -235,7 +235,7 @@ describe('v3.2 supports variants', () => {
     return run('@tailwind utilities', config).then((result) => {
       expect(result.css).toMatchFormattedCss(css`
         @supports ((backdrop-filter: blur(0px))) {
-          .supports-\\[\\(backdrop-filter\\:blur\\(0px\\)\\)\\]\\:backdrop-blur-lg {
+          .supports-\\[\\(backdrop-filter\:blur\\(0px\\)\\)\\]\:backdrop-blur-lg {
             --tw-backdrop-blur: blur(16px);
             -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness)
               var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate)
@@ -266,12 +266,12 @@ describe('v3.2 min/max media query variants', () => {
     return run('@tailwind utilities', config).then((result) => {
       expect(result.css).toMatchFormattedCss(css`
         @media (min-width: 768px) {
-          .min-\\[768px\\]\\:flex {
+          .min-\\[768px\\]\:flex {
             display: flex;
           }
         }
         @media (min-width: 1024px) {
-          .min-\\[1024px\\]\\:grid {
+          .min-\\[1024px\\]\:grid {
             display: grid;
           }
         }
@@ -292,12 +292,12 @@ describe('v3.2 min/max media query variants', () => {
     return run('@tailwind utilities', config).then((result) => {
       expect(result.css).toMatchFormattedCss(css`
         @media (max-width: 1024px) {
-          .max-\\[1024px\\]\\:hidden {
+          .max-\\[1024px\\]\:hidden {
             display: none;
           }
         }
         @media (max-width: 640px) {
-          .max-\\[640px\\]\\:block {
+          .max-\\[640px\\]\:block {
             display: block;
           }
         }
@@ -319,7 +319,7 @@ describe('v3.2 min/max media query variants', () => {
       expect(result.css).toMatchFormattedCss(css`
         @media (min-width: 640px) {
           @media (max-width: 1024px) {
-            .min-\\[640px\\]\\:max-\\[1024px\\]\\:flex {
+            .min-\\[640px\\]\:max-\\[1024px\\]\:flex {
               display: flex;
             }
           }
@@ -341,13 +341,13 @@ describe('v3.2 min/max media query variants', () => {
     return run('@tailwind utilities', config).then((result) => {
       expect(result.css).toMatchFormattedCss(css`
         @media (min-width: 20rem) {
-          .min-\\[20rem\\]\\:text-lg {
+          .min-\\[20rem\\]\:text-lg {
             font-size: 1.125rem;
             line-height: 1.75rem;
           }
         }
         @media (max-width: 50em) {
-          .max-\\[50em\\]\\:text-sm {
+          .max-\\[50em\\]\:text-sm {
             font-size: 0.875rem;
             line-height: 1.25rem;
           }
@@ -370,7 +370,7 @@ describe('v3.2 variant combinations', () => {
 
     return run('@tailwind utilities', config).then((result) => {
       expect(result.css).toMatchFormattedCss(css`
-        .aria-\\[checked\\]\\:data-\\[state\\=active\\]\\:bg-blue-500[aria-checked][data-state='active'] {
+        .aria-\\[checked\\]\:data-\\[state\=active\\]\:bg-blue-500[aria-checked][data-state="active"] {
           --tw-bg-opacity: 1;
           background-color: rgb(59 130 246 / var(--tw-bg-opacity));
         }
@@ -391,13 +391,13 @@ describe('v3.2 variant combinations', () => {
     return run('@tailwind utilities', config).then((result) => {
       expect(result.css).toMatchFormattedCss(css`
         @media (min-width: 768px) {
-          .md\\:aria-\\[checked\\]\\:bg-blue-500[aria-checked] {
+          .md\:aria-\\[checked\\]\:bg-blue-500[aria-checked] {
             --tw-bg-opacity: 1;
             background-color: rgb(59 130 246 / var(--tw-bg-opacity));
           }
         }
         @media (min-width: 1024px) {
-          .lg\\:data-\\[active\\]\\:opacity-100[data-active] {
+          .lg\:data-\\[active\\]\:opacity-100[data-active] {
             opacity: 1;
           }
         }
@@ -418,7 +418,7 @@ describe('v3.2 variant combinations', () => {
     return run('@tailwind utilities', config).then((result) => {
       expect(result.css).toMatchFormattedCss(css`
         @supports (display: grid) {
-          .hover\\:supports-\\[display\\:grid\\]\\:grid:hover {
+          .hover\:supports-\\[display\:grid\\]\:grid:hover {
             display: grid;
           }
         }
