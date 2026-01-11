@@ -721,7 +721,7 @@ function* resolveMatches(candidate, context) {
           name: 'media',
           params: `(max-width: ${maxValue})`,
         })
-        atRule.append(container.nodes[0]]
+        atRule.append(container.nodes[0])
         return [meta, atRule]
       })
     }
