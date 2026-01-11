@@ -71,41 +71,6 @@ function escapeArbitraryVariant(selector) {
   return selector.replace(/_/g, ' ')
 }
 
-function extractSpecialVariants(variants) {
-  let specialVariants = {
-    aria: [],
-    data: [],
-    supports: [],
-    min: [],
-    max: [],
-  }
-  let remaining = []
-
-  for (let variant of variants) {
-    let ariaMatch = variant.match(/^aria-\[(.+)\]$/)
-    let dataMatch = variant.match(/^data-\[(.+)\]$/)
-    let supportsMatch = variant.match(/^supports-\[(.+)\]$/)
-    let minMatch = variant.match(/^min-\[(.+)\]$/)
-    let maxMatch = variant.match(/^max-\[(.+)\]$/)
-
-    if (ariaMatch) {
-      specialVariants.aria.push(ariaMatch[1])
-    } else if (dataMatch) {
-      specialVariants.data.push(dataMatch[1])
-    } else if (supportsMatch) {
-      specialVariants.supports.push(supportsMatch[1])
-    } else if (minMatch) {
-      specialVariants.min.push(minMatch[1])
-    } else if (maxMatch) {
-      specialVariants.max.push(maxMatch[1])
-    } else {
-      remaining.push(variant)
-    }
-  }
-
-  return { specialVariants, remaining }
-}
-
 // Generate match permutations for a class candidate, like:
 // ['ring-offset-blue', '100']
 // ['ring-offset', 'blue-100']
@@ -210,6 +175,74 @@ function applyImportant(matches, classCandidate) {
 function applyVariant(variant, matches, context) {
   if (matches.length === 0) {
     return matches
+  }
+
+  // Handle v3.2 arbitrary variants: aria-[...], data-[...], supports-[...], min-[...], max-[...]
+  let ariaMatch = variant.match(/^aria-\[(.+)\]$/)
+  let dataMatch = variant.match(/^data-\[(.+)\]$/)
+  let supportsMatch = variant.match(/^supports-\[(.+)\]$/)
+  let minMatch = variant.match(/^min-\[(.+)\]$/)
+  let maxMatch = variant.match(/^max-\[(.+)\]$/)
+
+  if (ariaMatch || dataMatch || supportsMatch || minMatch || maxMatch) {
+    let result = []
+
+    for (let [meta, rule] of matches) {
+      let container = postcss.root({ nodes: [rule.clone()] })
+      let collectedFormats = []
+
+      // Apply the variant transformation
+      if (ariaMatch) {
+        let ariaValue = ariaMatch[1]
+        collectedFormats.push(`&[aria-${ariaValue}]`)
+      } else if (dataMatch) {
+        let dataValue = dataMatch[1]
+        collectedFormats.push(`&[data-${dataValue}]`)
+      } else if (supportsMatch) {
+        let supportsValue = supportsMatch[1]
+        let atRule = postcss.atRule({
+          name: 'supports',
+          params: `(${supportsValue})`,
+        })
+        let nodes = container.nodes
+        container.removeAll()
+        atRule.append(nodes)
+        container.append(atRule)
+      } else if (minMatch) {
+        let minValue = minMatch[1]
+        let atRule = postcss.atRule({
+          name: 'media',
+          params: `(min-width: ${minValue})`,
+        })
+        let nodes = container.nodes
+        container.removeAll()
+        atRule.append(nodes)
+        container.append(atRule)
+      } else if (maxMatch) {
+        let maxValue = maxMatch[1]
+        let atRule = postcss.atRule({
+          name: 'media',
+          params: `(max-width: ${maxValue})`,
+        })
+        let nodes = container.nodes
+        container.removeAll()
+        atRule.append(nodes)
+        container.append(atRule)
+      }
+
+      container.nodes[0].raws.tailwind = { ...container.nodes[0].raws.tailwind, parentLayer: meta.layer }
+
+      let withMeta = [
+        {
+          ...meta,
+          collectedFormats: (meta.collectedFormats ?? []).concat(collectedFormats),
+        },
+        container.nodes[0],
+      ]
+      result.push(withMeta)
+    }
+
+    return result
   }
 
   if (context.variantMap.has(variant)) {
@@ -508,11 +541,7 @@ function* resolveMatches(candidate, context) {
   let { arbitraryVariants, remaining } = extractArbitraryVariants(candidate, separator)
 
   // Continue with remaining candidate (without arbitrary variants)
-  let [classCandidate, ...allVariants] = splitWithSeparator(remaining, separator).reverse()
-
-  // Extract special variants (aria, data, supports, min, max)
-  let { specialVariants, remaining: variants } = extractSpecialVariants(allVariants)
-
+  let [classCandidate, ...variants] = splitWithSeparator(remaining, separator).reverse()
   let important = false
 
   if (classCandidate.startsWith('!')) {
@@ -662,67 +691,6 @@ function* resolveMatches(candidate, context) {
         })
 
         return [meta, container.nodes[0]]
-      })
-    }
-
-    // Apply ARIA attribute variants
-    for (let ariaValue of specialVariants.aria) {
-      matches = matches.map(([meta, rule]) => {
-        let container = postcss.root({ nodes: [rule.clone()] })
-        container.walkRules((r) => {
-          r.selector = `${r.selector}[aria-${ariaValue}]`
-        })
-        return [meta, container.nodes[0]]
-      })
-    }
-
-    // Apply data attribute variants
-    for (let dataValue of specialVariants.data) {
-      matches = matches.map(([meta, rule]) => {
-        let container = postcss.root({ nodes: [rule.clone()] })
-        container.walkRules((r) => {
-          r.selector = `${r.selector}[data-${dataValue}]`
-        })
-        return [meta, container.nodes[0]]
-      })
-    }
-
-    // Apply CSS feature query variants
-    for (let supportsValue of specialVariants.supports) {
-      matches = matches.map(([meta, rule]) => {
-        let container = postcss.root({ nodes: [rule.clone()] })
-        let atRule = postcss.atRule({
-          name: 'supports',
-          params: `(${supportsValue})`,
-        })
-        atRule.append(container.nodes[0])
-        return [meta, atRule]
-      })
-    }
-
-    // Apply min-width media query variants
-    for (let minValue of specialVariants.min) {
-      matches = matches.map(([meta, rule]) => {
-        let container = postcss.root({ nodes: [rule.clone()] })
-        let atRule = postcss.atRule({
-          name: 'media',
-          params: `(min-width: ${minValue})`,
-        })
-        atRule.append(container.nodes[0])
-        return [meta, atRule]
-      })
-    }
-
-    // Apply max-width media query variants
-    for (let maxValue of specialVariants.max) {
-      matches = matches.map(([meta, rule]) => {
-        let container = postcss.root({ nodes: [rule.clone()] })
-        let atRule = postcss.atRule({
-          name: 'media',
-          params: `(max-width: ${maxValue})`,
-        })
-        atRule.append(container.nodes[0])
-        return [meta, atRule]
       })
     }
 
