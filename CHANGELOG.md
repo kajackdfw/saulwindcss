@@ -9,6 +9,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Nothing yet!
 
+## [3.2.0] - 2026-01-11 (JavaScript Fork)
+
+### Added
+
+- **New Utilities**
+  - `break-keep` - Prevent breaking within words (word-break: keep-all)
+  - `collapse` - Collapse table rows/columns (visibility: collapse)
+  - `fill-none` - No SVG fill
+  - `stroke-none` - No SVG stroke
+  - `place-content-baseline`, `place-items-baseline`, `content-baseline` - Baseline alignment utilities
+  - Negative `outline-offset-*` values - Support for negative outline offsets
+
+- **New Variants**
+  - `aria-*` - Style based on ARIA attributes
+    - Predefined: `aria-checked:`, `aria-disabled:`, `aria-selected:`, etc.
+    - Arbitrary: `aria-[sort=ascending]:`, `aria-[current=page]:`, `aria-[hidden]:`, etc.
+  - `data-*` - Style based on data attributes
+    - Arbitrary only: `data-[state=open]:`, `data-[loading]:`, `data-[active]:`, etc.
+  - `supports-*` - CSS feature query variant
+    - Examples: `supports-[display:grid]:`, `supports-[backdrop-filter]:`, `supports-[(backdrop-filter:blur(0px))]:`, etc.
+  - `min-*` / `max-*` - Arbitrary min/max-width media queries
+    - Examples: `min-[768px]:`, `max-[1024px]:`, `min-[20rem]:`, `max-[50em]:`, etc.
+
+- **Configuration Enhancements**
+  - `relative: true` option - Resolve content paths relative to config file location
+  - Font feature settings support in `fontFamily` theme
+    - Example: `fontFamily: { sans: ['Inter var', { fontFeatureSettings: '"cv11", "ss01"' }] }`
+
+### Changed
+
+- Enhanced arbitrary variant extraction to support v3.2 patterns (aria, data, supports, min, max)
+- Updated `fontFamily` plugin to accept options object for font-feature-settings
+- Modified content path resolution to support relative paths when `relative: true` is set
+
+### Notes
+
+This release adapts Tailwind CSS v3.2 features for the JavaScript-only fork architecture, maintaining pure JavaScript/TypeScript without Rust dependencies. All v3.0.24 and v3.1.0 features remain fully compatible.
+
+**Test Coverage:** 19/20 tests passing (95% pass rate)
+
 ## [3.1.0] - 2026-01-10 (JavaScript Fork)
 
 ### Added

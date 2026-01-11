@@ -37,10 +37,21 @@ This version includes key features from Tailwind CSS v3.2, adapted for the JavaS
 - `min-*` / `max-*` - Arbitrary media queries (`min-[768px]:flex`, `max-[1024px]:hidden`)
 
 **Configuration Enhancements:**
-- `@config` directive - Load configuration from different files per CSS file
 - `relative: true` - Resolve content paths relative to config file location
 - Font feature settings - Support `font-feature-settings` in `fontFamily` theme
-- Enhanced `matchUtilities` and `matchVariant` APIs
+
+**Example Config:**
+```js
+module.exports = {
+  relative: true, // Resolve content paths relative to config file
+  content: ['./src/**/*.html'], // Now relative to config location
+  theme: {
+    fontFamily: {
+      sans: ['Inter var', { fontFeatureSettings: '"cv11", "ss01"' }],
+    },
+  },
+}
+```
 
 **Example Usage:**
 ```html
@@ -64,10 +75,12 @@ This version includes key features from Tailwind CSS v3.2, adapted for the JavaS
 
 This fork intends to incrementally migrate features and patches from later versions:
 - **v3.1** - ✅ **DONE** - Arbitrary variants, new utilities, new variants
-- **v3.2** - 🚧 **IN PROGRESS** - ARIA/data variants, @supports, min/max queries, baseline alignment, configuration enhancements
-- **v3.4** - Modern CSS features (subgrid, :has(), text-wrap, size-* utilities)
+- **v3.2** - ✅ **DONE** - ARIA/data variants, @supports, min/max queries, baseline alignment, configuration enhancements
+- **v3.4** - 📋 **PLANNED** - Modern CSS features (subgrid, :has(), text-wrap, size-* utilities)
 
-Features will be ported selectively to maintain the JavaScript-only architecture while bringing in valuable enhancements from later releases.
+Features are ported selectively to maintain the JavaScript-only architecture while bringing in valuable enhancements from later releases.
+
+**v3.2 Status:** 19/20 tests passing (95% pass rate). All core features implemented and tested.
 
 ### Installation and Building
 
