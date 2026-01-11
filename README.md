@@ -264,7 +264,7 @@ module.exports = {
 }
 ```
 
-## Simple Method to use the prebult packages in your nodejs / React project
+### Simple method to use prebult tgz in your nodejs web site
 
   "dependencies": {
     "react": "^19.2.0",
