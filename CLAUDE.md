@@ -4,32 +4,41 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## About This Branch
 
-**Branch:** `javascript-fork-v3.2.0` (with v3.1 on `javascript-fork-v3.1`)
-**Version:** 3.2.0
+**Branch:** `javascript-fork-v3.4.0` (with v3.3 on `javascript-fork-v3.3.0`)
+**Version:** 3.4.0
 **Architecture:** JavaScript-only (no Rust dependencies)
 
-This is a JavaScript-only fork of Tailwind CSS v3, originally based on v3.0.24 - the last version before the Rust/Oxide engine was introduced. This branch has been upgraded with v3.2 features while maintaining the pure JavaScript/TypeScript architecture.
+This is a JavaScript-only fork of Tailwind CSS v3, originally based on v3.0.24 - the last version before the Rust/Oxide engine was introduced. This branch has been upgraded with v3.4 features while maintaining the pure JavaScript/TypeScript architecture.
 
-**Note:** The `main` branch contains v4 with Rust/pnpm/monorepo architecture. This document describes the `javascript-fork-v3.2.0` branch only.
+**Note:** The `main` branch contains v4 with Rust/pnpm/monorepo architecture. This document describes the `javascript-fork-v3.4.0` branch only.
 
-### v3.2.0 Update
+### v3.4.0 Update
 
-The v3.2.0 release includes key features from Tailwind CSS v3.2, adapted for JavaScript-only architecture:
+The v3.4.0 release builds upon v3.3.0 and includes all previous features, ready for additional v3.4 enhancements.
 
-**New Features:**
+**Inherited Features from v3.3.0:**
+- ✅ Extended color palette with 950 shades (22 color families)
+- ✅ Line-clamp utilities (`line-clamp-{1-6}`, `line-clamp-none`)
+- ✅ Comprehensive logical properties (inset, margin, padding, border-radius, scroll)
+- ✅ New utility classes (hyphens, caption-side, list-image, whitespace-break-spaces)
+- ✅ Enhanced alignment utilities (justify-normal/stretch, content-normal/stretch)
+
+**Inherited Features from v3.2.0:**
 - ✅ ARIA attribute variants (`aria-checked:`, `aria-[disabled]:`)
 - ✅ Data attribute variants (`data-[state=open]:`, `data-[loading]:`)
 - ✅ CSS feature query variant (`supports-[display:grid]:`)
 - ✅ Min/max media query variants (`min-[768px]:`, `max-[1024px]:`)
-- ✅ New utilities (`break-keep`, `collapse`, `fill-none`, `stroke-none`, baseline alignment, negative outline-offset)
-- ✅ Configuration enhancements (`@config` directive, `relative: true`, font-feature-settings)
+- ✅ Additional utilities (`break-keep`, `collapse`, `fill-none`, `stroke-none`, baseline alignment, negative outline-offset)
 
-**Architecture Changes:**
-- Enhanced `src/corePlugins.js` with new variant plugins (aria, data, supports, min/max)
-- Updated `src/lib/defaultExtractor.js` to extract new variant patterns
-- Added new utility plugins for v3.2 features
-- Enhanced configuration loading in `src/lib/setupContextUtils.js`
-- All changes maintain JavaScript-only architecture (no Rust/Oxide dependencies)
+**Inherited Features from v3.1.0:**
+- ✅ Arbitrary variants (`[&:hover]:text-red-500`, `[&_p]:text-sm`)
+- ✅ New utilities (`border-spacing-*`, `text-start/end`, `grid-flow-dense`)
+- ✅ New variants (`backdrop:`, `enabled:`, `optional:`, `contrast-more/less:`)
+
+**Architecture:**
+- All features maintain JavaScript-only architecture (no Rust/Oxide dependencies)
+- Version-specific build system preserving all previous version builds
+- Symlink packaging fix ensuring proper npm installation
 
 ## Commands
 
