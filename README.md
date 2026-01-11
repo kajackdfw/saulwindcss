@@ -264,7 +264,13 @@ module.exports = {
 }
 ```
 
-------
+## Simple Method to use the prebult packages in your nodejs / React project
+
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tailwindcss": "file:../saulwindcss/dist/3.4.0/tailwindcss-3.4.0.tgz"
+  }
 
 ## Contributing to Tailwind , Not Me
 
