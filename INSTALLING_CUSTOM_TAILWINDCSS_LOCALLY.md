@@ -9,6 +9,10 @@ This guide explains how to set up a custom local version of Tailwind CSS in a Vi
 
 ## Installation Steps
 
+cd YourProjects
+git clone https://github.com/kajackdfw/saulwindcss.git ( saulwindcss folder )
+cd ../yourNewReactApp
+
 ### 1. Install Dependencies
 
 In your `package.json`, add the following dependencies:
